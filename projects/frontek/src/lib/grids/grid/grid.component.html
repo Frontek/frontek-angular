@@ -1,19 +1,22 @@
-<table
-[ngStyle]="tableStyles">
-  <thead>
-    <tr>
-      <th
-      *ngFor="let column of headers"
-        [ngStyle]="thStyles">
-        {{ column.header }}
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let row of data">
-      <td *ngFor="let column of headers"
-        [ngStyle]="tdStyles">
-      {{ row[column.field] }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="container"
+  [ngStyle]="containerStyles">
+  <table
+  [ngStyle]="tableStyles">
+    <thead>
+      <tr>
+        <th
+        *ngFor="let column of headers"
+          [ngStyle]="thStyles">
+          {{ column.header }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of data">
+        <td *ngFor="let column of headers"
+          [ngStyle]="tdStyles">
+        {{ row[column.field] }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
