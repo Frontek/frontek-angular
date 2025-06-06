@@ -4,6 +4,8 @@
       <thead>
         <tr>
           <th *ngFor="let column of headers; let i = index"
+          (mouseenter)="thHoverEffect($event, i, true)"
+          (mouseleave)="thHoverEffect($event, i,false)"
               [style.width.px]="columnWidths[i]"
               [ngStyle]="thStyles">
             <div class="header-content">
