@@ -3,13 +3,13 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
-  selector: 'grid-component',
+  selector: 'simple-grid-component',
   standalone: true,
   imports: [CommonModule, DragDropModule],
   templateUrl: './grid.component.html',
   styleUrl: './grid.component.css'
 })
-export class GridComponent implements OnInit, OnChanges {
+export class SimpleGridComponent implements OnInit, OnChanges {
   @Input() headers: { field: string, header: string }[] = [];
   @Input() data: Record<string, any>[] = [];
   @Input() headerBackgroundColor: string = '#2F3845';
