@@ -1,10 +1,21 @@
 table{
-  width: 100%;
+  /* min-width: 100%; */
   border-collapse: collapse;
+  table-layout: auto;
 }
+.custom-thead {
+  width: 100%;
+  table-layout: auto !important;
+}
+
+
 th, td {
   padding: 8px;
+  white-space: nowrap; /* impede quebra de linha */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 th {
   font-weight: bold;
 }
@@ -14,3 +25,17 @@ tr:hover {
 td {
   vertical-align: top;
 }
+
+.header-content{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.options-box{
+  display: flex;
+}
+
+
+

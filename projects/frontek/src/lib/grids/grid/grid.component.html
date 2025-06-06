@@ -1,21 +1,34 @@
-<div class="container"
-  [ngStyle]="containerStyles">
-  <table
-  [ngStyle]="tableStyles">
+<div class="container" [ngStyle]="containerStyles">
+  <!-- Tabela do cabeçalho -->
+  <table class="custom-thead" [ngStyle]="tableStyles">
     <thead>
       <tr>
-        <th
-        *ngFor="let column of headers"
-          [ngStyle]="thStyles">
-          {{ column.header }}
+        <th *ngFor="let column of headers; let i = index"
+            [style.width.px]="columnWidths[i]"
+            [ngStyle]="thStyles"
+            class="header-cell">
+          <div class="header-content">
+            {{ column.header }}
+            <div class="options-box">
+              <span (mousedown)="startResize($event, i)"
+                    class="material-symbols-outlined">drag_indicator</span>
+            </div>
+          </div>
         </th>
+         <th class="filler-cell"[ngStyle]="thStyles"></th>
       </tr>
     </thead>
+  </table>
+
+  <!-- Tabela do corpo -->
+  <table [ngStyle]="tableStyles">
     <tbody>
       <tr *ngFor="let row of data">
-        <td *ngFor="let column of headers"
-          [ngStyle]="tdStyles">
-        {{ row[column.field] }}</td>
+        <td *ngFor="let column of headers; let i = index"
+            [style.width.px]="columnWidths[i]"
+            [ngStyle]="tdStyles">
+          {{ row[column.field] }}
+        </td>
       </tr>
     </tbody>
   </table>
