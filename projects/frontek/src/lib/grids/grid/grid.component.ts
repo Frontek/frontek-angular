@@ -24,7 +24,7 @@ export class GridComponent implements OnInit, OnChanges {
   columnWidths: number[] = [];
 
   ngOnInit() {
-    this.columnWidths = this.headers.map(() => 150);
+    this.columnWidths = this.headers.map(() => 200);
   }
 
   ngOnChanges() {
@@ -55,13 +55,11 @@ startResize(event: MouseEvent, index: number) {
 
   const onMouseMove = (e: MouseEvent) => {
     const dx = e.pageX - startX;
-    const newWidth = Math.max(startWidth + dx, 50); // mínimo de 50px
+    const newWidth = Math.max(startWidth + dx, 150);
 
     requestAnimationFrame(() => {
-      const container = document.querySelector('.container') as HTMLElement;
       const headerRow = document.querySelector('.custom-thead tr') as HTMLElement;
       const sumColumns = this.columnWidths.reduce((acc, width, idx) => {return  acc + width ;}, 0);
-      console.log('Sum of other columns:', sumColumns);
 
       const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
       console.log('Header row width:', headerRowWidth);
@@ -83,7 +81,5 @@ startResize(event: MouseEvent, index: number) {
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
 }
-
-
 
 }
