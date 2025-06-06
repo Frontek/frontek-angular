@@ -108,13 +108,13 @@ export class GridComponent implements OnInit, OnChanges {
     this.saveGridConfig();
   }
 
-  private saveGridConfig() {
-    const config = {
-      headers: this.headers,
-      columnWidths: this.columnWidths
-    };
-    localStorage.setItem(this.storageKey, JSON.stringify(config));
-  }
+    private saveGridConfig() {
+      const config = {
+        headers: this.headers,
+        columnWidths: this.columnWidths
+      };
+      localStorage.setItem(this.storageKey, JSON.stringify(config));
+    }
 
   private loadGridConfig() {
     const saved = localStorage.getItem(this.storageKey);
