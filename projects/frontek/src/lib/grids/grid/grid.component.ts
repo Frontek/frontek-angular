@@ -48,23 +48,42 @@ export class GridComponent implements OnInit, OnChanges {
     };
   }
 
-  startResize(event: MouseEvent, index: number) {
-    event.preventDefault();
-    const startX = event.pageX;
-    const startWidth = this.columnWidths[index];
+startResize(event: MouseEvent, index: number) {
+  event.preventDefault();
+  const startX = event.pageX;
+  const startWidth = this.columnWidths[index];
 
-    const onMouseMove = (e: MouseEvent) => {
-      const dx = e.pageX - startX;
-      const newWidth = startWidth + dx;
-      this.columnWidths[index] = newWidth;
-    };
+  const onMouseMove = (e: MouseEvent) => {
+    const dx = e.pageX - startX;
+    const newWidth = Math.max(startWidth + dx, 50); // mínimo de 50px
 
-    const onMouseUp = () => {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
+    requestAnimationFrame(() => {
+      const container = document.querySelector('.container') as HTMLElement;
+      const headerRow = document.querySelector('.custom-thead tr') as HTMLElement;
+      const sumColumns = this.columnWidths.reduce((acc, width, idx) => {return  acc + width ;}, 0);
+      console.log('Sum of other columns:', sumColumns);
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  }
+      const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
+      console.log('Header row width:', headerRowWidth);
+
+      if (sumColumns > headerRowWidth && newWidth > startWidth) {
+        document.removeEventListener('mousemove', onMouseMove);
+        return;
+      }else{
+        this.columnWidths[index] = newWidth;
+      }
+    });
+  };
+
+  const onMouseUp = () => {
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+}
+
+
+
 }

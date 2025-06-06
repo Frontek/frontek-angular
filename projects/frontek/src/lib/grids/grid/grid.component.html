@@ -5,13 +5,11 @@
       <tr>
         <th *ngFor="let column of headers; let i = index"
             [style.width.px]="columnWidths[i]"
-            [ngStyle]="thStyles"
-            class="header-cell">
+            [ngStyle]="thStyles">
           <div class="header-content">
             {{ column.header }}
             <div class="options-box">
-              <span (mousedown)="startResize($event, i)"
-                    class="material-symbols-outlined">drag_indicator</span>
+              <span (mousedown)="startResize($event, i)" class="material-symbols-outlined">drag_indicator</span>
             </div>
           </div>
         </th>
@@ -27,7 +25,7 @@
         <td *ngFor="let column of headers; let i = index"
             [style.width.px]="columnWidths[i]"
             [ngStyle]="tdStyles">
-          {{ row[column.field] }}
+            {{ row[column.field] }}
         </td>
       </tr>
     </tbody>
