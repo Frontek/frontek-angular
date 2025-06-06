@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { SimpleGridComponent } from '../../projects/frontek/src/public-api';
+import { SimpleGridComponent,ExecutiveGridComponent } from '../../projects/frontek/src/public-api';
 
 @Component({
   selector: 'app-root',
-  imports: [SimpleGridComponent],
+  imports: [SimpleGridComponent,ExecutiveGridComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

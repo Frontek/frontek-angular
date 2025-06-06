@@ -7,3 +7,4 @@ export * from './lib/frontek.component';
 
 
 export * from './lib/grids/simple-grid/grid.component';
+export * from './lib/grids/executive-grid/grid.component';

@@ -1,0 +1,47 @@
+<div class="container" [ngStyle]="containerStyles">
+  <div class="container-body">
+    <table class="custom-thead" [ngStyle]="tableStyles">
+      <thead>
+        <tr
+          cdkDropList
+          cdkDropListOrientation="horizontal"
+          (cdkDropListDropped)="onDrop($event)"
+        >
+          <th
+            *ngFor="let column of headers; let i = index"
+            cdkDrag
+            [style.width.px]="columnWidths[i]"
+            [ngStyle]="thStyles"
+            (mouseenter)="thHoverEffect($event, i, true)"
+            (mouseleave)="thHoverEffect($event, i, false)"
+          >
+            <div class="header-content">
+              <span>{{ column.header }}</span>
+              <div class="options-box">
+                <span
+                  (mousedown)="startResize($event, i); $event.stopPropagation();"class="material-symbols-outlined">drag_indicator</span>
+              </div>
+            </div>
+          </th>
+          <th class="filler-cell" [ngStyle]="thStyles"></th>
+        </tr>
+      </thead>
+    </table>
+
+    <table [ngStyle]="tableStyles">
+      <tbody>
+        <tr *ngFor="let row of data">
+          <td
+            *ngFor="let column of headers; let i = index"
+            [style.width.px]="columnWidths[i]"
+            [ngStyle]="tdStyles"
+          >
+            {{ row[column.field] }}
+          </td>
+          <td class="no-border" [ngStyle]="tdStyles"></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
