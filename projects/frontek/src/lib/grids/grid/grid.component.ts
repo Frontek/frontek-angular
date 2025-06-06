@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'grid-component',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, DragDropModule],
   templateUrl: './grid.component.html',
   styleUrl: './grid.component.css'
 })
@@ -16,6 +17,8 @@ export class GridComponent implements OnInit, OnChanges {
   @Input() textColor: string = '#fff';
   @Input() textFontSize: string = '14px';
   @Input() textAlign: string = 'left';
+  @Input() tableId: string = "frontek-grid";
+
 
   tableStyles: Record<string, string> = {};
   thStyles: Record<string, string> = {};
@@ -23,8 +26,16 @@ export class GridComponent implements OnInit, OnChanges {
   containerStyles: Record<string, string> = {};
   columnWidths: number[] = [];
 
+
+    get storageKey(): string {
+      return `gridConfig-${this.tableId}`;
+    }
+
   ngOnInit() {
-    this.columnWidths = this.headers.map(() => 200);
+    this.loadGridConfig();
+    if (this.columnWidths.length === 0) {
+      this.columnWidths = this.headers.map(() => 200);
+    }
   }
 
   ngOnChanges() {
@@ -88,6 +99,35 @@ export class GridComponent implements OnInit, OnChanges {
       target.style.backgroundColor = this.bodyBackgroundColor;
     } else {
       target.style.backgroundColor = this.headerBackgroundColor;
+    }
+  }
+
+  onDrop(event: CdkDragDrop<any[]>) {
+    moveItemInArray(this.headers, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.columnWidths, event.previousIndex, event.currentIndex);
+    this.saveGridConfig();
+  }
+
+  private saveGridConfig() {
+    const config = {
+      headers: this.headers,
+      columnWidths: this.columnWidths
+    };
+    localStorage.setItem(this.storageKey, JSON.stringify(config));
+  }
+
+  private loadGridConfig() {
+    const saved = localStorage.getItem(this.storageKey);
+    if (saved) {
+      try {
+        const config = JSON.parse(saved);
+        if (config?.headers && config?.columnWidths) {
+          this.headers = config.headers;
+          this.columnWidths = config.columnWidths;
+        }
+      } catch (err) {
+        console.error('Erro ao carregar configuração da tabela:', err);
+      }
     }
   }
 

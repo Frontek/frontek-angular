@@ -1,21 +1,33 @@
 <div class="container" [ngStyle]="containerStyles">
   <div class="container-body">
-      <table class="custom-thead" [ngStyle]="tableStyles">
+
+    <!-- Tabela do Cabeçalho -->
+    <table class="custom-thead" [ngStyle]="tableStyles">
       <thead>
-        <tr>
-          <th *ngFor="let column of headers; let i = index"
-          (mouseenter)="thHoverEffect($event, i, true)"
-          (mouseleave)="thHoverEffect($event, i,false)"
-              [style.width.px]="columnWidths[i]"
-              [ngStyle]="thStyles">
+        <tr
+          cdkDropList
+          cdkDropListOrientation="horizontal"
+          (cdkDropListDropped)="onDrop($event)"
+        >
+          <th
+            *ngFor="let column of headers; let i = index"
+            cdkDrag
+            [style.width.px]="columnWidths[i]"
+            [ngStyle]="thStyles"
+            (mouseenter)="thHoverEffect($event, i, true)"
+            (mouseleave)="thHoverEffect($event, i, false)"
+          >
             <div class="header-content">
-              {{ column.header }}
+              <span>{{ column.header }}</span>
               <div class="options-box">
-                <span (mousedown)="startResize($event, i)" class="material-symbols-outlined">drag_indicator</span>
+                <span
+                  (mousedown)="startResize($event, i); $event.stopPropagation();"class="material-symbols-outlined">drag_indicator</span>
               </div>
             </div>
           </th>
-          <th class="filler-cell"[ngStyle]="thStyles"></th>
+
+          <!-- Preenchimento à direita, opcional -->
+          <th class="filler-cell" [ngStyle]="thStyles"></th>
         </tr>
       </thead>
     </table>
@@ -23,13 +35,16 @@
     <table [ngStyle]="tableStyles">
       <tbody>
         <tr *ngFor="let row of data">
-          <td *ngFor="let column of headers; let i = index"
-              [style.width.px]="columnWidths[i]"
-              [ngStyle]="tdStyles">
-              {{ row[column.field] }}
+          <td
+            *ngFor="let column of headers; let i = index"
+            [style.width.px]="columnWidths[i]"
+            [ngStyle]="tdStyles"
+          >
+            {{ row[column.field] }}
           </td>
         </tr>
       </tbody>
     </table>
+
   </div>
 </div>

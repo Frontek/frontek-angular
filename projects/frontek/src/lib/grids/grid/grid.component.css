@@ -62,5 +62,10 @@ tr:hover {
   display: flex;
 }
 
+.material-symbols-outlined{
+  pointer-events: auto;
+  cursor: col-resize;
+}
+
 
 
