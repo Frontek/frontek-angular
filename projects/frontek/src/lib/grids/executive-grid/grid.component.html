@@ -7,6 +7,7 @@
           cdkDropListOrientation="horizontal"
           (cdkDropListDropped)="onDrop($event)"
         >
+          <th class="dropdown-header-th" [ngStyle]="thStyles"></th>
           <th
             *ngFor="let column of headers; let i = index"
             cdkDrag
@@ -29,6 +30,11 @@
       <tbody>
         <div class="trash-columns"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M440-320h80v-166l64 62 56-56-160-160-160 160 56 56 64-62v166ZM280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/></svg></div>
         <tr *ngFor="let row of data">
+          <td [ngStyle]="tdStyles">
+            <div (click)="rotateArrow($event)" class="dropdown-handle-box closed">
+              <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="#FFFFFF"><path d="M480-384 288-576h384L480-384Z"/></svg>
+            </div>
+          </td>
           <td
             *ngFor="let column of headers; let i = index"
             [style.width.px]="columnWidths[i]"

@@ -140,4 +140,20 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     }
   }
 
+ rotateArrow(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+
+  // Exemplo: alternar classe 'closed'
+  if (target.classList.contains('closed')) {
+    target.classList.remove('closed');
+    target.classList.add('opened');
+  } else {
+    target.classList.remove('opened');
+    target.classList.add('closed');
+  }
+
+  // Ou use classList.toggle para simplificar
+  // target.classList.toggle('closed');
+}
+
 }
