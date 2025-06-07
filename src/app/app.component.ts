@@ -14,7 +14,8 @@ export class AppComponent {
     { field: 'fullName', header: 'Full Name' },
     { field: 'department', header: 'Department' },
     { field: 'position', header: 'Position' },
-    { field: 'email', header: 'Email' }
+    { field: 'email', header: 'Email' },
+    { field: 'status', header: 'Status' }
   ];
 
   subheaders = [

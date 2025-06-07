@@ -31,6 +31,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   dataCellStyle: Record<string, string> = {};
   wrapperStyle: Record<string, string> = {};
   searchIcon: Record<string, string> = {};
+  filtersBox: Record<string, string> = {};
   input: Record<string, string> = {};
 
   // Column sizes
@@ -93,8 +94,12 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     this.searchIcon = {
       'color': this.headerBgColor,
       'font-size': '20px',
-      'cursor': 'pointer',
-      'display': 'flex',
+    };
+
+    this.filtersBox = {
+      'background-color': this.headerBgColor,
+      'font-size': this.fontSize,
+      'color': this.fontColor,
     };
     this.input = {
       'color': this.headerBgColor,
