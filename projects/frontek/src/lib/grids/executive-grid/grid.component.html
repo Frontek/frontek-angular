@@ -1,3 +1,11 @@
+<div class="filters-head">
+  <div>a</div>
+  <div class="search-box">
+    <label class="search-label" for="search"><span [ngStyle]="searchIcon" class="material-symbols-outlined">search</span></label>
+    <input [(ngModel)]="searchTerm" (ngModelChange)="findData()" [ngStyle]="input" id="search" class="search-input" type="text" placeholder="Buscar..." />
+  </div>
+</div>
+
 <div class="container" [ngStyle]="wrapperStyle">
   <div class="container-body">
     <table class="custom-thead" [ngStyle]="tableStyle">
@@ -38,7 +46,7 @@
 
       <tbody>
         <!-- Data Rows -->
-        <ng-container *ngFor="let row of rowData; let rowIndex = index">
+        <ng-container *ngFor="let row of filteredData; let rowIndex = index">
           <!-- Primary Row -->
           <tr>
             <td [ngStyle]="dataCellStyle">

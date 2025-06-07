@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'executive-grid-component',
   standalone: true,
-  imports: [CommonModule, DragDropModule],
+  imports: [CommonModule, DragDropModule,FormsModule],
   templateUrl: './grid.component.html',
-  styleUrl: './grid.component.css',
+  styleUrls: ['./grid.component.css', './search.css']
 
 })
 export class ExecutiveGridComponent implements OnInit, OnChanges {
@@ -29,6 +30,8 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   headerCellStyle: Record<string, string> = {};
   dataCellStyle: Record<string, string> = {};
   wrapperStyle: Record<string, string> = {};
+  searchIcon: Record<string, string> = {};
+  input: Record<string, string> = {};
 
   // Column sizes
   columnWidths: number[] = [];
@@ -37,13 +40,17 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   expandedRows: Set<number> = new Set();
   expandedRowsHeight: { [key: number]: string } = {};
 
+  searchTerm: string = '';
+  filteredData: Record<string, any>[] = [];
+
+
   get localStorageKey(): string {
     return `gridConfig-${this.tableIdentifier}`;
   }
 
   ngOnInit() {
     console.log(this.subColumnDefinitions);
-
+    this.filteredData = [...this.rowData];
     this.loadStoredGridConfig();
 
     if (this.columnWidths.length === 0) {
@@ -82,6 +89,15 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       'font-size': this.fontSize,
       'color': this.fontColor,
       'text-align': this.textAlignment,
+    };
+    this.searchIcon = {
+      'color': this.headerBgColor,
+      'font-size': '20px',
+      'cursor': 'pointer',
+      'display': 'flex',
+    };
+    this.input = {
+      'color': this.headerBgColor,
     };
   }
 
@@ -185,5 +201,32 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   // Função opcional para simplificar a verificação no template
   isRowExpanded(index: number): boolean {
     return this.expandedRows.has(index);
+  }
+
+  findData() {
+    if (!this.searchTerm) {
+      this.filteredData = [...this.rowData];
+      return;
+    }
+
+    const term = this.searchTerm.toLowerCase();
+
+    this.filteredData = this.rowData.filter(row => {
+      const directMatch = Object.entries(row).some(([key, value]) => {
+        if (key === 'subdatas' && typeof value === 'object' && value !== null) {
+          return Object.values(value).some(subVal =>
+            String(subVal).toLowerCase().includes(term)
+          );
+        } else {
+          return String(value).toLowerCase().includes(term);
+        }
+      });
+      return directMatch;
+    });
+
+    // Se não achar nada, volta pra mostrar tudo
+    if (this.filteredData.length === 0) {
+      this.filteredData = [];
+    }
   }
 }
