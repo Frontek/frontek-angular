@@ -17,7 +17,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   @Input() textColor: string = '#fff';
   @Input() textFontSize: string = '14px';
   @Input() textAlign: string = 'left';
-  @Input() tableId: string = "frontek-grid";
+  @Input() tableId: string = "frontek-grid-executive";
 
 
   tableStyles: Record<string, string> = {};
@@ -50,7 +50,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       'border-bottom': `1px solid ${this.bodyBackgroundColor}`,
     };
     this.tdStyles = {
-      'border-bottom': `1px solid ${this.headerBackgroundColor}`,
+      // 'border-bottom': `1px solid ${this.headerBackgroundColor}`,
     };
     this.containerStyles = {
       'width': '100%',
@@ -106,6 +106,15 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     moveItemInArray(this.headers, event.previousIndex, event.currentIndex);
     moveItemInArray(this.columnWidths, event.previousIndex, event.currentIndex);
     this.saveGridConfig();
+
+    const trashbox = document.querySelector('.trash-columns') as HTMLElement;
+    trashbox.style.opacity = '0';
+    trashbox.style.left = '-100%';
+  }
+  initalDrag(){
+    const trashbox = document.querySelector('.trash-columns') as HTMLElement;
+    trashbox.style.left = '0';
+    trashbox.style.opacity = '1';
   }
 
     private saveGridConfig() {

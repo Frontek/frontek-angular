@@ -36,8 +36,7 @@ export class AppComponent {
     { field: 'name', header: 'Name' },
     { field: 'age', header: 'Age' },
     { field: 'email', header: 'Email' },
-    { field: 'phone', header: 'Phone' },
-    { field: 'address', header: 'Address' },
+    { field: 'phone', header: 'Phone' }
   ];
 
 data = [
