@@ -150,4 +150,16 @@ svg {
 .expanded-cell{
   padding-inline: 3rem;
   transition: all 0.3s ease;
+  /* position: relative; */
+}
+.expandable-row{
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  position: absolute;
+  top: -1000px;
+}
+.expandable-row.opened {
+  opacity: 1;
+  position: relative;
+  top: 0;
 }

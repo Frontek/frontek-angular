@@ -52,7 +52,6 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
     if (this.subColumnWidths.length === 0) {
       this.subColumnWidths = this.subColumnDefinitions.map(() => 200);
-      console.log(this.subColumnWidths);
     }
   }
 
@@ -79,7 +78,10 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     };
 
     this.subtableStyle = {
-      'border-bottom': `1px solid ${this.headerBgColor}`
+      'border-bottom': `1px solid ${this.headerBgColor}`,
+      'font-size': this.fontSize,
+      'color': this.fontColor,
+      'text-align': this.textAlignment,
     };
   }
 

@@ -73,13 +73,13 @@
           </tr>
 
           <!-- Subtable Row (Expandable Content) -->
-          <tr class="expandable-row" *ngIf="expandedRows.has(rowIndex)">
+          <tr class="expandable-row  "[class.opened]="expandedRows.has(rowIndex)">
             <td
-              class="expanded-cell"
+              class="expanded-cell "
               [attr.colspan]="columnDefinitions.length + 2"
               [ngStyle]="dataCellStyle"
             >
-              <div class="subtable-wrapper" [class.expanded]="expandedRows.has(rowIndex)">
+              <div class="subtable-wrapper" [class.expanded]="expandedRows.has(rowIndex)" >
                 <table [ngStyle]="subtableStyle">
                   <thead>
                     <tr>
