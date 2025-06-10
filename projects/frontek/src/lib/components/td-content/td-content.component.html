@@ -1,3 +1,18 @@
-<div>
-  {{data.text}}
+<div class="td-content">
+  <a [href]="data.link" target="_blank" rel="noopener noreferrer">
+    <img *ngIf="data.image" [src]="data.image" alt="">
+  </a>
+  <div class="content">
+    <p *ngIf="data.type !== 'badge'">{{ data.text }}</p>
+    <span class="badge" *ngIf="data.type == 'badge'"
+      [style.borderColor]="data.color"
+      >
+      <span [style.backgroundColor]="data.color" class="ball"></span>
+      {{ data.text }}
+    </span>
+    <p *ngIf="data.description" class="description">{{ data.description }}</p>
+    <div class="tags-box" *ngIf="data.tags">
+      <span class="tag" *ngFor="let tag of data.tags">{{ tag.text }}</span>
+    </div>
+  </div>
 </div>

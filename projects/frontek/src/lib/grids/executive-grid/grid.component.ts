@@ -9,7 +9,7 @@ import { TdContentComponent } from '../../components/td-content/td-content.compo
   standalone: true,
   imports: [CommonModule, DragDropModule,FormsModule,TdContentComponent],
   templateUrl: './grid.component.html',
-  styleUrls: ['./grid.component.css', './search.css']
+  styleUrls: ['./grid.component.css', './icons.css']
 
 })
 export class ExecutiveGridComponent implements OnInit, OnChanges {
@@ -22,8 +22,11 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 };
 
   @Input() rowData: [{field:string,content:{
-    text:string,
-  }}] = [{field: '', content: {text: ''}}];
+    text?:string,
+    image?: string,
+    description?: string,
+    tags?: { text: string}[],
+  }}] = [{field: '', content: {}}];
 
   @Input() tableIdentifier: string = "frontek-grid-executive";
 
@@ -56,27 +59,27 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     }
   } = {
     thead: {
-      fontSize: '14px',
+      fontSize: '15px',
       fontColor: '#fff',
       bgColor: '#2F3845',
       bgColorHover: '#3A4452',
       textAlignment: 'left'
     },
     tbody: {
-      fontSize: '14px',
+      fontSize: '15px',
       fontColor: '#fff',
       bgColor: '#1D2634',
       bgColorHover: '#2F3845',
       textAlignment: 'left'
     },
     filterBox: {
-      fontSize: '14px',
+      fontSize: '15px',
       fontColor: '#fff',
       bgColor: '#2F3845',
       bgColorHover: '#3A4452'
     },
     search: {
-      fontSize: '14px',
+      fontSize: '15px',
       iconSize: '20px',
       fontColor: '#2F3845',
       text: 'Search...'
@@ -111,7 +114,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.filteredData = [...this.rowData];
-    this.loadStoredGridConfig();
+    // this.loadStoredGridConfig();
 
     if (this.columnWidths.length === 0) {
       this.columnWidths = this.columnDefinitions.map(() => 200);
@@ -131,6 +134,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.tableStyle = {
       'font-size': `${this.styles.tbody?.fontSize}`,
+      'font-family': 'Arial, sans-serif',
     };
 
     this.theadStyle = {
@@ -189,6 +193,41 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
           return;
         } else {
           this.columnWidths[columnIndex] = updatedWidth;
+        }
+      });
+    };
+
+    const onMouseUp = () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  }
+
+  // Column Resize Handler
+  onSubColumnResizeStart(event: MouseEvent, columnIndex: number) {
+    event.preventDefault();
+    const startX = event.pageX;
+    const initialWidth = this.subColumnWidths[columnIndex];
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+      const deltaX = moveEvent.pageX - startX;
+      const updatedWidth = Math.max(initialWidth + deltaX, 150);
+
+      requestAnimationFrame(() => {
+        const headerRow = document.querySelector('.custom-thead tr') as HTMLElement;
+        const totalColumnWidth = this.columnWidths.reduce((sum, width) => sum + width, 0);
+        const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
+
+        console.log('Header row width:', headerRowWidth);
+
+        if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
+          document.removeEventListener('mousemove', onMouseMove);
+          return;
+        } else {
+          this.subColumnWidths[columnIndex] = updatedWidth;
         }
       });
     };
@@ -294,7 +333,6 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       return directMatch;
     });
 
-    // Se não achar nada, volta pra mostrar tudo
     if (this.filteredData.length === 0) {
       this.filteredData = [];
     }

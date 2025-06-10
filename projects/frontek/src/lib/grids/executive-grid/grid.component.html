@@ -95,6 +95,7 @@
               *ngFor="let content of columnDefinitions; let i = index"
               [style.width.px]="columnWidths[i]"
               [attr.data-id]="rowIndex"
+              class="td-content"
             >
               <td-content [data]="row[content.field]"></td-content>
             </td>
@@ -120,7 +121,15 @@
                         (mouseenter)="onHeaderHover($event, i, true)"
                         (mouseleave)="onHeaderHover($event, i, false)"
                       >
-                        {{ column.header }}
+                         <div class="header-content">
+                          <span>{{ column.header }}</span>
+                          <div class="options-box">
+                            <!-- Resize Icon (comentado) -->
+                            <span
+                                  (mousedown)="onSubColumnResizeStart($event, i); $event.stopPropagation();"
+                                  class="material-symbols-outlined resize">drag_indicator</span>
+                          </div>
+                        </div>
                       </th>
                       <th class="filler-cell" [ngStyle]="theadStyle"></th>
                     </tr>
@@ -133,7 +142,7 @@
                         *ngFor="let subcolumn of subColumnDefinitions; let i = index"
                         [style.width.px]="subColumnWidths[i]"
                       >
-                        {{ row['subdatas'][subcolumn.field] }}
+                      <td-content [data]="row['subdatas'][subcolumn.field]"></td-content>
                       </td>
                       <td class="no-border"></td>
                     </tr>
