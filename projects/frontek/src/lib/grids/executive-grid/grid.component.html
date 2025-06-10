@@ -1,8 +1,20 @@
 <div class="filters-head">
   <div [ngStyle]="filtersBox" class="filters-box">
-    <label class="label">Todos</label>
-    <label class="label">Ativos</label>
-    <label class="label">Inativos</label>
+    <label
+      (mouseenter)="onLabelHover($event, true)"
+      (mouseleave)="onLabelHover($event, false)" class="label">
+      Todos
+    </label>
+    <label
+      (mouseenter)="onLabelHover($event, true)"
+      (mouseleave)="onLabelHover($event, false)" class="label">
+      Ativos
+    </label>
+    <label
+      (mouseenter)="onLabelHover($event, true)"
+      (mouseleave)="onLabelHover($event, false)" class="label">
+      Inativos
+    </label>
   </div>
   <div class="search-box">
     <label class="search-label" for="search"><span [ngStyle]="searchIcon" class="material-symbols-outlined">search</span></label>
@@ -10,7 +22,7 @@
   </div>
 </div>
 
-<div class="container" [ngStyle]="wrapperStyle">
+<div class="container" [ngStyle]="tbodyStyle">
   <div class="container-body">
     <table class="custom-thead" [ngStyle]="tableStyle">
       <thead>
@@ -20,7 +32,7 @@
           (cdkDropListDropped)="onColumnDrop($event)"
         >
           <!-- Dropdown Handle Header Cell -->
-          <th class="dropdown-header-th" [ngStyle]="headerCellStyle"></th>
+          <th class="dropdown-header-th" [ngStyle]="theadStyle"></th>
 
           <!-- Main Headers -->
           <th
@@ -28,7 +40,7 @@
             cdkDrag
             (cdkDragStarted)="onColumnDragStart()"
             [style.width.px]="columnWidths[i]"
-            [ngStyle]="headerCellStyle"
+            [ngStyle]="theadStyle"
             (mouseenter)="onHeaderHover($event, i, true)"
             (mouseleave)="onHeaderHover($event, i, false)"
           >
@@ -44,7 +56,7 @@
           </th>
 
           <!-- Filler Cell for layout -->
-          <th class="filler-cell" [ngStyle]="headerCellStyle"></th>
+          <th class="filler-cell" [ngStyle]="theadStyle"></th>
         </tr>
       </thead>
 
@@ -66,8 +78,11 @@
         <!-- Data Rows -->
         <ng-container *ngFor="let row of filteredData; let rowIndex = index">
           <!-- Primary Row -->
-          <tr>
-            <td [ngStyle]="dataCellStyle">
+          <tr
+            (mouseenter)="onTrHover($event, rowIndex, true)"
+            (mouseleave)="onTrHover($event, rowIndex, false)"
+          >
+            <td>
               <div
                 (click)="toggleRowExpansion(rowIndex)"
                 class="dropdown-handle-box"
@@ -88,14 +103,13 @@
             <td
               *ngFor="let column of columnDefinitions; let i = index"
               [style.width.px]="columnWidths[i]"
-              [ngStyle]="dataCellStyle"
               [attr.data-id]="rowIndex"
             >
               {{ row[column.field] }}
             </td>
 
             <!-- Filler Cell -->
-            <td class="no-border" [ngStyle]="dataCellStyle"></td>
+            <td class="no-border"></td>
           </tr>
 
           <!-- Subtable Row (Expandable Content) -->
@@ -103,32 +117,34 @@
             <td
               class="expanded-cell "
               [attr.colspan]="columnDefinitions.length + 2"
-              [ngStyle]="dataCellStyle"
             >
               <div class="subtable-wrapper" [class.expanded]="expandedRows.has(rowIndex)" >
-                <table [ngStyle]="subtableStyle">
+                <table>
                   <thead>
                     <tr>
                       <th
                         *ngFor="let column of subColumnDefinitions; let i = index"
-                        [ngStyle]="headerCellStyle"
+                        [ngStyle]="theadStyle"
                         [style.width.px]="subColumnWidths[i]"
+                        (mouseenter)="onHeaderHover($event, i, true)"
+                        (mouseleave)="onHeaderHover($event, i, false)"
                       >
                         {{ column.header }}
                       </th>
-                      <th class="filler-cell" [ngStyle]="headerCellStyle"></th>
+                      <th class="filler-cell" [ngStyle]="theadStyle"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr
+                      (mouseenter)="onTrHover($event, rowIndex, true)"
+                      (mouseleave)="onTrHover($event, rowIndex, false)">
                       <td
                         *ngFor="let column of subColumnDefinitions; let i = index"
                         [style.width.px]="subColumnWidths[i]"
-                        [ngStyle]="dataCellStyle"
                       >
                         {{ row['subdatas'][column.field] }}
                       </td>
-                      <td class="no-border" [ngStyle]="dataCellStyle"></td>
+                      <td class="no-border"></td>
                     </tr>
                   </tbody>
                 </table>

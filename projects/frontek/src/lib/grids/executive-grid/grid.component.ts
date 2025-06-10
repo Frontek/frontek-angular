@@ -17,19 +17,69 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   @Input() subColumnDefinitions: { field: string, header: string }[] = [];
   @Input() rowData: Record<string, any>[] = [];
 
-  @Input() headerBgColor: string = '#2F3845';
-  @Input() bodyBgColor: string = '#1D2634';
-  @Input() fontColor: string = '#fff';
-  @Input() fontSize: string = '14px';
-  @Input() textAlignment: string = 'left';
   @Input() tableIdentifier: string = "frontek-grid-executive";
+
+  @Input() styles: {
+    thead?:{
+      fontSize?: string;
+      fontColor?: string;
+      bgColor?: string;
+      bgColorHover?: string;
+      textAlignment?: string;
+    },
+    tbody?:{
+      fontSize?: string;
+      fontColor?: string;
+      bgColor?: string;
+      bgColorHover?: string;
+      textAlignment?: string;
+    },
+    filterBox?:{
+      fontSize?: string;
+      fontColor?: string;
+      bgColor?: string;
+      bgColorHover?: string;
+    },
+    search?:{
+      fontSize?: string;
+      iconSize?: string;
+      fontColor?: string;
+      text?: string;
+    }
+  } = {
+    thead: {
+      fontSize: '14px',
+      fontColor: '#fff',
+      bgColor: '#2F3845',
+      bgColorHover: '#3A4452',
+      textAlignment: 'left'
+    },
+    tbody: {
+      fontSize: '14px',
+      fontColor: '#fff',
+      bgColor: '#1D2634',
+      bgColorHover: '#2F3845',
+      textAlignment: 'left'
+    },
+    filterBox: {
+      fontSize: '14px',
+      fontColor: '#fff',
+      bgColor: '#2F3845',
+      bgColorHover: '#3A4452'
+    },
+    search: {
+      fontSize: '14px',
+      iconSize: '20px',
+      fontColor: '#2F3845',
+      text: 'Search...'
+    }
+  };
 
   // Style bindings
   tableStyle: Record<string, string> = {};
   subtableStyle: Record<string, string> = {};
-  headerCellStyle: Record<string, string> = {};
-  dataCellStyle: Record<string, string> = {};
-  wrapperStyle: Record<string, string> = {};
+  theadStyle: Record<string, string> = {};
+  tbodyStyle: Record<string, string> = {};
   searchIcon: Record<string, string> = {};
   filtersBox: Record<string, string> = {};
   input: Record<string, string> = {};
@@ -50,7 +100,6 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    console.log(this.subColumnDefinitions);
     this.filteredData = [...this.rowData];
     this.loadStoredGridConfig();
 
@@ -65,44 +114,37 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.tableStyle = {
-      'font-size': this.fontSize,
-      'color': this.fontColor,
-      'text-align': this.textAlignment,
-      'font-family': 'IBM Plex Sans, sans-serif',
+      'font-size': `${this.styles.tbody?.fontSize}`,
     };
 
-    this.headerCellStyle = {
-      'background-color': this.headerBgColor,
-      'border-bottom': `1px solid ${this.bodyBgColor}`,
+    this.theadStyle = {
+      'background-color': `${this.styles.thead?.bgColor}`,
+      'font-size': `${this.styles.thead?.fontSize}`,
+      'color': `${this.styles.thead?.fontColor}`,
+      'text-align': `${this.styles.thead?.textAlignment}`,
     };
 
-    this.dataCellStyle = {
-      // Optional customization for <td>
-    };
-
-    this.wrapperStyle = {
+    this.tbodyStyle = {
       'width': '100%',
-      'background-color': this.bodyBgColor,
+      'background-color': `${this.styles.tbody?.bgColor}`,
+      'font-size': `${this.styles.tbody?.fontSize}`,
+      'color': `${this.styles.tbody?.fontColor}`,
+      'text-align': `${this.styles.tbody?.textAlignment}`,
     };
 
-    this.subtableStyle = {
-      'border-bottom': `1px solid ${this.headerBgColor}`,
-      'font-size': this.fontSize,
-      'color': this.fontColor,
-      'text-align': this.textAlignment,
-    };
     this.searchIcon = {
-      'color': this.headerBgColor,
-      'font-size': '20px',
+      'font-size': `${this.styles.search?.iconSize}`,
+      'color': `${this.styles.search?.fontColor}`
     };
 
     this.filtersBox = {
-      'background-color': this.headerBgColor,
-      'font-size': this.fontSize,
-      'color': this.fontColor,
+      'background-color': `${this.styles.filterBox?.bgColor}`,
+      'font-size': `${this.styles.filterBox?.fontSize}`,
+      'color': `${this.styles.filterBox?.fontColor}`,
     };
     this.input = {
-      'color': this.headerBgColor,
+      'font-size': `${this.styles.search?.fontSize}`,
+      'color': `${this.styles.search?.fontColor}`,
     };
   }
 
@@ -144,7 +186,15 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   // Header Hover Styling
   onHeaderHover(event: MouseEvent, columnIndex: number, reset: boolean = false) {
     const element = event.target as HTMLElement;
-    element.style.backgroundColor = reset ? this.bodyBgColor : this.headerBgColor;
+    element.style.backgroundColor = reset ? `${this.styles.thead?.bgColorHover}` : `${this.styles.thead?.bgColor}`;
+  }
+  onTrHover(event: MouseEvent, columnIndex: number, reset: boolean = false) {
+    const element = event.target as HTMLElement;
+    element.style.backgroundColor = reset ? `${this.styles.tbody?.bgColorHover}` : `${this.styles.tbody?.bgColor}`;
+  }
+  onLabelHover(event: MouseEvent, reset: boolean = false) {
+    const element = event.target as HTMLElement;
+    element.style.backgroundColor = reset ? `${this.styles.filterBox?.bgColorHover}` : `${this.styles.filterBox?.bgColor}`;
   }
 
   // Drag-and-drop column reorder

@@ -19,7 +19,7 @@
 
 .filters-head{
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: space-between;
   margin-bottom: 1rem;
 }
@@ -27,7 +27,7 @@
   display: flex;
   border: 1px solid #ccc;
   border-radius: .5rem;
-  padding: 0.2rem 0.6rem;
+  padding: 0.4rem 0.8rem;
 }
 .search-label{
   display: flex;
@@ -45,7 +45,7 @@
 .filters-box{
   display: flex;
   align-items: center;
-  padding: .2rem;
+  padding: .5rem;
   border-radius: .5rem;
 }
 .filters-box .label{
@@ -108,22 +108,23 @@ td {
   vertical-align: top;
   position: relative;
   cursor: default;
+  transition: background-color 0.3s ease;
 }
 
 th {
   font-weight: bold;
-  transition: background-color 0.3s ease;
   cursor: grab;
 }
 
-th:nth-child(1) {
+th:nth-child(1),td:nth-child(1) {
   border-top-left-radius:  1rem;
   border-bottom-left-radius: 1rem;
 }
-th:nth-last-child(1) {
+th:nth-last-child(1),td:nth-last-child(1)  {
   border-top-right-radius:  1rem;
   border-bottom-right-radius: 1rem;
 }
+
 
 td.no-border {
   border: none !important;
