@@ -55,6 +55,10 @@
   cursor: pointer;
   padding: 0.5rem .7rem;
   border-radius: .5rem;
+  transition: all 0.3s ease;
+}
+.filters-box .label:hover {
+  opacity: .6;
 }
 
 /* .search-box:focus-within {

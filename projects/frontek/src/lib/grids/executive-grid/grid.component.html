@@ -1,19 +1,10 @@
 <div class="filters-head">
   <div [ngStyle]="filtersBox" class="filters-box">
-    <label
-      (mouseenter)="onLabelHover($event, true)"
-      (mouseleave)="onLabelHover($event, false)" class="label">
-      Todos
-    </label>
-    <label
-      (mouseenter)="onLabelHover($event, true)"
-      (mouseleave)="onLabelHover($event, false)" class="label">
-      Ativos
-    </label>
-    <label
-      (mouseenter)="onLabelHover($event, true)"
-      (mouseleave)="onLabelHover($event, false)" class="label">
-      Inativos
+    <label *ngFor="let filter of filter.filters; let i = index"
+      class="label"
+      (click)="onFilterChange($event,filter.value)"
+      [ngStyle]="activeFilterValue === filter.value ? activeFilter : null">
+      {{ filter.label }}
     </label>
   </div>
   <div class="search-box">

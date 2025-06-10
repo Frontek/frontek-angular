@@ -15,6 +15,11 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   // Input properties
   @Input() columnDefinitions: { field: string, header: string }[] = [];
   @Input() subColumnDefinitions: { field: string, header: string }[] = [];
+  @Input() filter: { fieldToFilter: string, filters: { value: string, label: string }[] } = {
+  fieldToFilter: '',
+  filters: []
+};
+
   @Input() rowData: Record<string, any>[] = [];
 
   @Input() tableIdentifier: string = "frontek-grid-executive";
@@ -82,6 +87,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   tbodyStyle: Record<string, string> = {};
   searchIcon: Record<string, string> = {};
   filtersBox: Record<string, string> = {};
+  activeFilter: Record<string, string> = {};
   input: Record<string, string> = {};
 
   // Column sizes
@@ -93,6 +99,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
   searchTerm: string = '';
   filteredData: Record<string, any>[] = [];
+  activeFilterValue: string = '';
 
 
   get localStorageKey(): string {
@@ -110,6 +117,12 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     if (this.subColumnWidths.length === 0) {
       this.subColumnWidths = this.subColumnDefinitions.map(() => 200);
     }
+
+    // map para padroznar o value dos filters
+    this.filter.filters = this.filter.filters.map(f => ({
+      ...f,
+      value: f.value.toLowerCase().trim()
+    }));
   }
 
   ngOnChanges() {
@@ -141,6 +154,9 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       'background-color': `${this.styles.filterBox?.bgColor}`,
       'font-size': `${this.styles.filterBox?.fontSize}`,
       'color': `${this.styles.filterBox?.fontColor}`,
+    };
+    this.activeFilter = {
+      'background-color': `${this.styles.filterBox?.bgColorHover}`,
     };
     this.input = {
       'font-size': `${this.styles.search?.fontSize}`,
@@ -191,10 +207,6 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   onTrHover(event: MouseEvent, columnIndex: number, reset: boolean = false) {
     const element = event.target as HTMLElement;
     element.style.backgroundColor = reset ? `${this.styles.tbody?.bgColorHover}` : `${this.styles.tbody?.bgColor}`;
-  }
-  onLabelHover(event: MouseEvent, reset: boolean = false) {
-    const element = event.target as HTMLElement;
-    element.style.backgroundColor = reset ? `${this.styles.filterBox?.bgColorHover}` : `${this.styles.filterBox?.bgColor}`;
   }
 
   // Drag-and-drop column reorder
@@ -283,5 +295,23 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     if (this.filteredData.length === 0) {
       this.filteredData = [];
     }
+  }
+
+  onFilterChange(event: MouseEvent,value:string){
+    const element = event.target as HTMLElement;
+    const filterValue = value;
+    const fieldToFilter = this.filter.fieldToFilter;
+    this.filteredData = [...this.rowData];
+    if (filterValue) {
+      this.activeFilterValue = filterValue;
+      this.filteredData = this.filteredData.filter(row => {
+        const fieldValue = row[fieldToFilter];
+        return fieldValue && String(fieldValue).toLowerCase().includes(filterValue.toLowerCase());
+      });
+    } else {
+      this.activeFilterValue = '';
+      this.filteredData = [...this.rowData];
+    }
+
   }
 }

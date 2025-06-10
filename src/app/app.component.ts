@@ -24,6 +24,15 @@ export class AppComponent {
     { field: 'status', header: 'Status' }
   ];
 
+  filter = {
+    fieldToFilter: 'status',
+    filters: [
+      { label: 'Todos', value: '' },
+      { label: 'Ativo', value: 'active' },
+      { label: 'On Leave', value: 'on leave' },
+    ]
+  };
+
   data = [
     {
       fullName: 'Alice Johnson',
