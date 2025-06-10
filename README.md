@@ -1,59 +1,139 @@
-# FrontekAngular
+# @frontek/angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.6.
+An Angular library for rendering dynamic tables with support for columns, subcolumns, and customizable filters.
 
-## Development server
+## 📦 Installation
 
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+To use this library in your Angular project, install it with:
 
 ```bash
-ng generate component component-name
+npm install @frontek/angular
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Peer Dependencies (install if not already present):
 
 ```bash
-ng generate --help
+npm install @angular/cdk@^19.2.18 \
+            @angular/common@^19.2.0 \
+            @angular/core@^19.2.0 \
+            @angular/forms@^19.2.0 \
+            tslib@^2.3.0 \
+            zone.js@~0.15.0
 ```
 
-## Building
+## 🧩 Usage
 
-To build the project run:
+Import the module in your `AppModule` or any feature module:
 
-```bash
-ng build
+```ts
+import { ExecutiveGridComponent  } from '@frontek/angular';
+
+@NgModule({
+  imports: [ExecutiveGridComponent]
+})
+export class AppModule {}
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Use the component in your template:
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+```html
+<executive-grid-component
+  [columnDefinitions]="columnDefs"
+  [subColumnDefinitions]="subColumnDefs"
+  [filter]="filterOptions"
+  [rowData]="dataRows">
+</executive-grid-component>
 ```
 
-## Running end-to-end tests
+## ⚙️ Component Inputs
 
-For end-to-end (e2e) testing, run:
+### `columnDefinitions`
 
-```bash
-ng e2e
+Defines the main columns of the table.
+
+```ts
+columnDefs = [
+  { field: 'name', header: 'Name' },
+  { field: 'age', header: 'Age' }
+];
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+### `subColumnDefinitions`
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+(Optional) Defines additional subcolumns for each row.
+
+```ts
+subColumnDefs = [
+  { field: 'email', header: 'Email' },
+  { field: 'phone', header: 'Phone' }
+];
+```
+
+---
+
+### `filter`
+
+Enables filtering based on a specific field.
+
+```ts
+filterOptions = {
+  fieldToFilter: 'age',
+  filters: [
+    { value: '20', label: '20 Years' },
+    { value: '30', label: '30 Years' }
+  ]
+};
+```
+
+---
+
+### `rowData`
+
+Defines the data to be rendered in the table.
+
+```ts
+dataRows = [
+  { field: 'name', content: { value: 'John' } },
+  { field: 'age', content: { value: 30 } }
+];
+```
+
+## 📚 Full Example
+
+```ts
+columnDefs = [
+  { field: 'name', header: 'Name' },
+  { field: 'age', header: 'Age' }
+];
+
+subColumnDefs = [
+  { field: 'email', header: 'Email' },
+  { field: 'phone', header: 'Phone' }
+];
+
+filterOptions = {
+  fieldToFilter: 'age',
+  filters: [
+    { value: '20', label: '20 Years' },
+    { value: '30', label: '30 Years' }
+  ]
+};
+
+dataRows = [
+  { field: 'name', content: { value: 'Maria' } },
+  { field: 'age', content: { value: 30 } }
+];
+```
+
+---
+
+## ❗ Notes
+
+- This library is intended for **external use only**. You should **not modify** its source code.
+- Ensure your project is using Angular version `^19.2.0` or compatible.
+
+## 🪪 License
+
+MIT © Frontek
