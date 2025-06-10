@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
+import { TdContentComponent } from '../../components/td-content/td-content.component';
 
 @Component({
   selector: 'executive-grid-component',
   standalone: true,
-  imports: [CommonModule, DragDropModule,FormsModule],
+  imports: [CommonModule, DragDropModule,FormsModule,TdContentComponent],
   templateUrl: './grid.component.html',
   styleUrls: ['./grid.component.css', './search.css']
 

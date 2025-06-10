@@ -92,11 +92,11 @@
             </td>
 
             <td
-              *ngFor="let column of columnDefinitions; let i = index"
+              *ngFor="let content of columnDefinitions; let i = index"
               [style.width.px]="columnWidths[i]"
               [attr.data-id]="rowIndex"
             >
-              {{ row[column.field] }}
+              <td-content [data]="content"></td-content>
             </td>
 
             <!-- Filler Cell -->
@@ -130,10 +130,10 @@
                       (mouseenter)="onTrHover($event, rowIndex, true)"
                       (mouseleave)="onTrHover($event, rowIndex, false)">
                       <td
-                        *ngFor="let column of subColumnDefinitions; let i = index"
+                        *ngFor="let subcolumn of subColumnDefinitions; let i = index"
                         [style.width.px]="subColumnWidths[i]"
                       >
-                        {{ row['subdatas'][column.field] }}
+                        {{ row['subdatas'][subcolumn.field] }}
                       </td>
                       <td class="no-border"></td>
                     </tr>
