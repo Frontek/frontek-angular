@@ -21,7 +21,9 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   filters: []
 };
 
-  @Input() rowData: Record<string, any>[] = [];
+  @Input() rowData: [{field:string,content:{
+    text:string,
+  }}] = [{field: '', content: {text: ''}}];
 
   @Input() tableIdentifier: string = "frontek-grid-executive";
 

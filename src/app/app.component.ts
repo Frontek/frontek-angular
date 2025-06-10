@@ -35,53 +35,53 @@ export class AppComponent {
 
   data = [
     {
-      fullName: 'Alice Johnson',
-      department: 'Marketing',
-      position: 'Marketing Manager',
-      email: 'alice.johnson@company.com',
-      phone: '555-1234',
-      office: 'New York HQ',
-      hireDate: '2018-03-15',
-      employeeId: 'EMP001',
-      status: 'Active',
+      fullName: { text: 'Alice',},
+      department: { text: 'Marketing'},
+      position: { text: 'Marketing Strategist'},
+      email: { text: 'Alice@gmail.com'},
+      phone: { text: '555-1234'},
+      office: { text: 'New York Office'},
+      hireDate: { text: '2020-05-15'},
+      employeeId: { text: 'EMP001'},
+      status: { text: 'Active', color: 'green' },
       subdatas: {
         projectName: 'Product Launch Q3',
         role: 'Lead Strategist',
         status: 'In Progress'
       }
     },
-    {
-      fullName: 'Brian Smith',
-      department: 'Engineering',
-      position: 'Senior Developer',
-      email: 'brian.smith@company.com',
-      phone: '555-5678',
-      office: 'Remote',
-      hireDate: '2019-07-01',
-      employeeId: 'EMP002',
-      status: 'Active',
-      subdatas: {
-        projectName: 'Platform Migration',
-        role: 'Backend Developer',
-        status: 'Completed'
-      }
-    },
-    {
-      fullName: 'Carla Mendes',
-      department: 'Human Resources',
-      position: 'HR Specialist',
-      email: 'carla.mendes@company.com',
-      phone: '555-8765',
-      office: 'São Paulo Office',
-      hireDate: '2021-01-10',
-      employeeId: 'EMP003',
-      status: 'On Leave',
-      subdatas: {
-        projectName: 'Onboarding Revamp',
-        role: 'Coordinator',
-        status: 'Pending'
-      }
-    }
+    // {
+    //   fullName: 'Brian Smith',
+    //   department: 'Engineering',
+    //   position: 'Senior Developer',
+    //   email: 'brian.smith@company.com',
+    //   phone: '555-5678',
+    //   office: 'Remote',
+    //   hireDate: '2019-07-01',
+    //   employeeId: 'EMP002',
+    //   status: 'Active',
+    //   subdatas: {
+    //     projectName: 'Platform Migration',
+    //     role: 'Backend Developer',
+    //     status: 'Completed'
+    //   }
+    // },
+    // {
+    //   fullName: 'Carla Mendes',
+    //   department: 'Human Resources',
+    //   position: 'HR Specialist',
+    //   email: 'carla.mendes@company.com',
+    //   phone: '555-8765',
+    //   office: 'São Paulo Office',
+    //   hireDate: '2021-01-10',
+    //   employeeId: 'EMP003',
+    //   status: 'On Leave',
+    //   subdatas: {
+    //     projectName: 'Onboarding Revamp',
+    //     role: 'Coordinator',
+    //     status: 'Pending'
+    //   }
+    // }
   ];
 
   headerBackgroundColor = 'lightgray';
