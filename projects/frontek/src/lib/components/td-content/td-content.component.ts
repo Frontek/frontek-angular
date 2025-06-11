@@ -11,7 +11,6 @@ export class TdContentComponent {
   @Input() data:any = {};
 
   ngOnInit() {
-    console.log('td-content data:', this.data);
   }
 
   hexToRgba(hex: string, alpha: number): string {

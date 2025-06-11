@@ -107,7 +107,7 @@
           </tr>
 
           <!-- Subtable Row (Expandable Content) -->
-          <tr data-id="rowIndex" class="expandable-row"[class.opened]="expandedRows.has(rowIndex)" [ngStyle]="trWithDropStyle">
+          <tr data-id="{{rowIndex}}" class="expandable-row"[class.opened]="expandedRows.has(rowIndex)" [ngStyle]="trWithDropStyle">
             <td
               class="expanded-cell "
               [attr.colspan]="columnDefinitions.length + 2"
@@ -138,6 +138,8 @@
                   </thead>
                   <tbody>
                     <tr
+                      class="subtable-row"
+                      data-id="{{rowIndex}}"
                       [ngStyle]="subtbodyStyle"
                       (mouseenter)="onTrHover($event, rowIndex, true)"
                       (mouseleave)="onTrHover($event, rowIndex, false)">
