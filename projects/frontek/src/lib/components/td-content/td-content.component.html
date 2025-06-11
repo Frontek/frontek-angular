@@ -3,16 +3,20 @@
     <img *ngIf="data.image" [src]="data.image" alt="">
   </a>
   <div class="content">
-    <p *ngIf="data.type !== 'badge'">{{ data.text }}</p>
-    <span class="badge" *ngIf="data.type == 'badge'"
+    <p (click)="copyText(data.text,$event)" class="copy" *ngIf="data.type !== 'badge'">{{ data.text }}</p>
+    <span (click)="copyText(data.text,$event)" class="badge copy" *ngIf="data.type == 'badge'"
       [style.borderColor]="data.color"
       >
       <span [style.backgroundColor]="data.color" class="ball"></span>
       {{ data.text }}
     </span>
-    <p *ngIf="data.description" class="description">{{ data.description }}</p>
+    <p (click)="copyText(data.text,$event)" *ngIf="data.description" class="description copy">{{ data.description }}</p>
     <div class="tags-box" *ngIf="data.tags">
-      <span class="tag" *ngFor="let tag of data.tags">{{ tag.text }}</span>
+      <span class="tag copy" *ngFor="let tag of data.tags" (click)="copyText(tag.text,$event)">{{ tag.text }}</span>
     </div>
   </div>
 </div>
+
+<!-- <div class="copy-alert">
+    <span>Copiado</span>
+</div> -->

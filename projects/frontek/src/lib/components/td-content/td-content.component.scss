@@ -23,11 +23,9 @@
 .td-content .content{
   display: flex;
   flex-direction: column;
+  gap: .2rem;
 }
 
-.td-content p{
-  // font-weight: bold;
-}
 .td-content p.description{
   font-weight: normal;
   color: #94a3b8   !important;
@@ -61,4 +59,32 @@
   width: 10px;
   border-radius: 50%;
   margin-right: .4rem;
+}
+
+.copy{
+  cursor: crosshair;
+}
+
+.copy-alert{
+  position: fixed;
+  top: 1rem;
+  left: -10rem;
+  background-color: green;
+  padding: .5rem 1rem;
+  border-radius: .4rem;
+  z-index: 1000;
+  transition: opacity .3s ease-in-out;
+  animation: slide-up 0.5s ease-in-out normal;
+  animation-delay: 0.2s;
+  opacity: 1;
+}
+
+//animacao de item subindo
+@keyframes slide-up {
+  from {
+    transform: translateY(20px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }

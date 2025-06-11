@@ -27,4 +27,37 @@ export class TdContentComponent {
       console.log( `rgba(${r},${g},${b},0.${alpha})`)
       return `rgba(${r},${g},${b},0.${alpha})`;
   }
+
+  copyText(text: string,event: MouseEvent) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        const x = event.clientX;
+        const y = event.clientY;
+        const tooltip = document.createElement('div');
+        tooltip.textContent = 'Copiado';
+        tooltip.style.position = 'absolute';
+        tooltip.style.left = `${x}px`;
+        tooltip.style.top = `${y}px`;
+        tooltip.style.backgroundColor = 'green';
+        tooltip.style.color = '#fff';
+        tooltip.style.padding = '5px 10px';
+        tooltip.style.borderRadius = '4px';
+        tooltip.style.zIndex = '1000';
+        document.body.appendChild(tooltip);
+        //animate the tooltip
+        tooltip.style.transition = 'opacity 0.5s ease-in-out';
+        tooltip.style.opacity = '1';
+        setTimeout(() => {
+          tooltip.style.opacity = '0';
+          setTimeout(() => {
+            document.body.removeChild(tooltip);
+          }, 300);
+        }, 500);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
+    } else {
+      console.warn('Clipboard API not supported');
+    }
+  }
 }
