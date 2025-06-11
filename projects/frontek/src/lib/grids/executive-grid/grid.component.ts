@@ -90,11 +90,14 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   tableStyle: Record<string, string> = {};
   subtableStyle: Record<string, string> = {};
   theadStyle: Record<string, string> = {};
+  subtheadStyle: Record<string, string> = {};
   tbodyStyle: Record<string, string> = {};
+  subtbodyStyle: Record<string, string> = {};
   searchIcon: Record<string, string> = {};
   filtersBox: Record<string, string> = {};
   activeFilter: Record<string, string> = {};
   input: Record<string, string> = {};
+  trWithDropStyle: Record<string, string> = {};
 
   // Column sizes
   columnWidths: number[] = [];
@@ -143,11 +146,23 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       'color': `${this.styles.thead?.fontColor}`,
       'text-align': `${this.styles.thead?.textAlignment}`,
     };
+    this.subtheadStyle = {
+      'background-color': `${this.styles.thead?.bgColor}`,
+      'font-size': `13px`,
+      'color': `${this.styles.thead?.fontColor}`,
+      'text-align': `${this.styles.thead?.textAlignment}`,
+    };
 
     this.tbodyStyle = {
       'width': '100%',
       'background-color': `${this.styles.tbody?.bgColor}`,
       'font-size': `${this.styles.tbody?.fontSize}`,
+      'color': `${this.styles.tbody?.fontColor}`,
+      'text-align': `${this.styles.tbody?.textAlignment}`,
+    };
+    this.subtbodyStyle = {
+      'background-color': `${this.styles.tbody?.bgColor}`,
+      'font-size': `13px`,
       'color': `${this.styles.tbody?.fontColor}`,
       'text-align': `${this.styles.tbody?.textAlignment}`,
     };
@@ -169,6 +184,9 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       'font-size': `${this.styles.search?.fontSize}`,
       'color': `${this.styles.search?.fontColor}`,
     };
+    this.trWithDropStyle = {
+      'border-bottom': `1px solid ${this.styles.thead?.bgColorHover}`,
+    }
   }
 
   // Column Resize Handler
@@ -185,8 +203,6 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
         const headerRow = document.querySelector('.custom-thead tr') as HTMLElement;
         const totalColumnWidth = this.columnWidths.reduce((sum, width) => sum + width, 0);
         const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
-
-        console.log('Header row width:', headerRowWidth);
 
         if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
           document.removeEventListener('mousemove', onMouseMove);

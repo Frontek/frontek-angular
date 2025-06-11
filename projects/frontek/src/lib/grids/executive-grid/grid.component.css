@@ -90,7 +90,7 @@
 /* Table base styles */
 table {
   border-collapse: collapse;
-  border-spacing: 0;
+  border-spacing: 1px;
   table-layout: fixed;
   width: 100%;
 }
@@ -107,7 +107,6 @@ tbody {
 /* Cell styles */
 th,
 td {
-  padding: 15px 8px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -117,7 +116,7 @@ td {
   transition: background-color 0.3s ease;
 }
 .subtable-wrapper th {
-  padding: 9px 8px;
+  padding: 7px 6px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -126,11 +125,18 @@ td {
   cursor: default;
   transition: background-color 0.3s ease;
 }
+.subtable-wrapper table {
+  border-collapse: collapse;
+}
 
 th {
   font-weight: bold;
   cursor: grab;
   word-wrap: break-word;
+  padding: 15px 8px;
+}
+td{
+  padding: 10px 8px;
 }
 
 th:nth-child(1),td:nth-child(1) {
@@ -219,7 +225,7 @@ svg {
 .expanded-cell{
   padding-inline: 3rem;
   transition: all 0.3s ease;
-  padding: 0px 35px;
+  padding: 0px 70px;
   /* position: relative; */
 }
 .expandable-row{
@@ -236,4 +242,7 @@ svg {
 
 .resize{
   cursor: col-resize  ;
+}
+.removeBorderBottom{
+  border-bottom: none !important;
 }

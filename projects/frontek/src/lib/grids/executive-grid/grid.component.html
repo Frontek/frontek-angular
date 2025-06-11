@@ -39,9 +39,9 @@
               <span>{{ column.header }}</span>
               <div class="options-box">
                 <!-- Resize Icon (comentado) -->
-                <!-- <span
+                <span
                       (mousedown)="onColumnResizeStart($event, i); $event.stopPropagation();"
-                      class="material-symbols-outlined">drag_indicator</span> -->
+                      class="material-symbols-outlined">drag_indicator</span>
               </div>
             </div>
           </th>
@@ -70,8 +70,10 @@
         <ng-container *ngFor="let row of filteredData; let rowIndex = index">
           <!-- Primary Row -->
           <tr
+            [ngStyle]="trWithDropStyle"
             (mouseenter)="onTrHover($event, rowIndex, true)"
             (mouseleave)="onTrHover($event, rowIndex, false)"
+            [class.removeBorderBottom]="expandedRows.has(rowIndex)"
           >
             <td>
               <div
@@ -105,7 +107,7 @@
           </tr>
 
           <!-- Subtable Row (Expandable Content) -->
-          <tr class="expandable-row  "[class.opened]="expandedRows.has(rowIndex)">
+          <tr data-id="rowIndex" class="expandable-row"[class.opened]="expandedRows.has(rowIndex)" [ngStyle]="trWithDropStyle">
             <td
               class="expanded-cell "
               [attr.colspan]="columnDefinitions.length + 2"
@@ -116,7 +118,7 @@
                     <tr>
                       <th
                         *ngFor="let column of subColumnDefinitions; let i = index"
-                        [ngStyle]="theadStyle"
+                        [ngStyle]="subtheadStyle"
                         [style.width.px]="subColumnWidths[i]"
                         (mouseenter)="onHeaderHover($event, i, true)"
                         (mouseleave)="onHeaderHover($event, i, false)"
@@ -136,6 +138,7 @@
                   </thead>
                   <tbody>
                     <tr
+                      [ngStyle]="subtbodyStyle"
                       (mouseenter)="onTrHover($event, rowIndex, true)"
                       (mouseleave)="onTrHover($event, rowIndex, false)">
                       <td
