@@ -3,6 +3,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 import { TdContentComponent } from '../../components/td-content/td-content.component';
+import { TableData } from './interfaces/interfaces';
 
 @Component({
   selector: 'executive-grid-component',
@@ -21,13 +22,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   filters: []
 };
 
-  @Input() rowData: [{field:string,content:{
-    text?:string,
-    image?: string,
-    description?: string,
-    tags?: { text: string}[],
-  }}] = [{field: '', content: {}}];
-
+  @Input() rowData: TableData  = [];
   @Input() tableIdentifier: string = "frontek-grid-executive";
 
   @Input() styles: {
@@ -107,7 +102,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   expandedRowsHeight: { [key: number]: string } = {};
 
   searchTerm: string = '';
-  filteredData: Record<string, any>[] = [];
+  filteredData: TableData  = [];
   activeFilterValue: string = '';
 
 
@@ -117,7 +112,6 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.filteredData = [...this.rowData];
-    // this.loadStoredGridConfig();
 
     if (this.columnWidths.length === 0) {
       this.columnWidths = this.columnDefinitions.map(() => 200);
@@ -355,20 +349,21 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   }
 
   onFilterChange(event: MouseEvent,value:string){
-    const element = event.target as HTMLElement;
-    const filterValue = value;
-    const fieldToFilter = this.filter.fieldToFilter;
-    this.filteredData = [...this.rowData];
-    if (filterValue) {
-      this.activeFilterValue = filterValue;
-      this.filteredData = this.filteredData.filter(row => {
-        const fieldValue = row[fieldToFilter];
-        return fieldValue && String(fieldValue).toLowerCase().includes(filterValue.toLowerCase());
-      });
-    } else {
-      this.activeFilterValue = '';
-      this.filteredData = [...this.rowData];
-    }
+    // const element = event.target as HTMLElement;
+    // const filterValue = value;
+    // const fieldToFilter = this.filter.fieldToFilter;
+    // this.filteredData = [...this.rowData];
+    // if (filterValue) {
+    //   this.activeFilterValue = filterValue;
+    //   this.filteredData = this.filteredData.filter(row => {
+    //     const fieldValue = row[fieldToFilter];
+    //     return fieldValue && String(fieldValue).toLowerCase().includes(filterValue.toLowerCase());
+    //   });
+    // } else {
+    //   this.activeFilterValue = '';
+    //   this.filteredData = [...this.rowData];
+    // }
 
   }
 }
+

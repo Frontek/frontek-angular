@@ -99,7 +99,9 @@
               [attr.data-id]="rowIndex"
               class="td-content"
             >
-              <td-content [data]="row[content.field]"></td-content>
+              <ng-container *ngFor="let tdData of row">
+                <td-content *ngIf="content['field'] == tdData['field']" [data]="tdData['content']"></td-content>
+              </ng-container>
             </td>
 
             <!-- Filler Cell -->
@@ -147,7 +149,7 @@
                         *ngFor="let subcolumn of subColumnDefinitions; let i = index"
                         [style.width.px]="subColumnWidths[i]"
                       >
-                      <td-content [data]="row['subdatas'][subcolumn.field]"></td-content>
+                      <!-- <td-content [data]="row['subdatas'][subcolumn.field]"></td-content> -->
                       </td>
                       <td class="no-border"></td>
                     </tr>
