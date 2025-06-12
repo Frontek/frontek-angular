@@ -15,7 +15,7 @@ import { TableData,Headers, TableStyles, FilterConfig } from './interfaces/inter
 })
 export class ExecutiveGridComponent implements OnInit, OnChanges {
   // Input properties
-  @Input() columnDefinitions: Headers = [];
+  @Input() headers: Headers = [];
   @Input() subColumnDefinitions: Headers = [];
   @Input() filter: FilterConfig = {fieldToFilter: '',filters: []}
 
@@ -65,8 +65,8 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   trWithDropStyle: Record<string, string> = {};
 
   // Column sizes
-  columnWidths: number[] = [];
-  subColumnWidths: number[] = [];
+  headersWidths: number[] = [];
+  subHeadersWidths: number[] = [];
 
   expandedRows: Set<number> = new Set();
   expandedRowsHeight: { [key: number]: string } = {};
@@ -83,12 +83,12 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.filteredData = [...this.rowData];
 
-    if (this.columnWidths.length === 0) {
-      this.columnWidths = this.columnDefinitions.map(() => 200);
+    if (this.headersWidths.length === 0) {
+      this.headersWidths = this.headers.map(() => 200);
     }
 
-    if (this.subColumnWidths.length === 0) {
-      this.subColumnWidths = this.subColumnDefinitions.map(() => 200);
+    if (this.subHeadersWidths.length === 0) {
+      this.subHeadersWidths = this.subColumnDefinitions.map(() => 200);
     }
 
     // map para padroznar o value dos filters
@@ -157,7 +157,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   onColumnResizeStart(event: MouseEvent, columnIndex: number) {
     event.preventDefault();
     const startX = event.pageX;
-    const initialWidth = this.columnWidths[columnIndex];
+    const initialWidth = this.headersWidths[columnIndex];
 
     const onMouseMove = (moveEvent: MouseEvent) => {
       const deltaX = moveEvent.pageX - startX;
@@ -165,14 +165,14 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
       requestAnimationFrame(() => {
         const headerRow = document.querySelector('.custom-thead tr') as HTMLElement;
-        const totalColumnWidth = this.columnWidths.reduce((sum, width) => sum + width, 0);
+        const totalColumnWidth = this.headersWidths.reduce((sum, width) => sum + width, 0);
         const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
 
         if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
           document.removeEventListener('mousemove', onMouseMove);
           return;
         } else {
-          this.columnWidths[columnIndex] = updatedWidth;
+          this.headersWidths[columnIndex] = updatedWidth;
         }
       });
     };
@@ -190,7 +190,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   onSubColumnResizeStart(event: MouseEvent, columnIndex: number) {
     event.preventDefault();
     const startX = event.pageX;
-    const initialWidth = this.subColumnWidths[columnIndex];
+    const initialWidth = this.subHeadersWidths[columnIndex];
 
     const onMouseMove = (moveEvent: MouseEvent) => {
       const deltaX = moveEvent.pageX - startX;
@@ -198,7 +198,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
       requestAnimationFrame(() => {
         const headerRow = document.querySelector('.custom-thead tr') as HTMLElement;
-        const totalColumnWidth = this.columnWidths.reduce((sum, width) => sum + width, 0);
+        const totalColumnWidth = this.headersWidths.reduce((sum, width) => sum + width, 0);
         const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
 
         console.log('Header row width:', headerRowWidth);
@@ -207,7 +207,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
           document.removeEventListener('mousemove', onMouseMove);
           return;
         } else {
-          this.subColumnWidths[columnIndex] = updatedWidth;
+          this.subHeadersWidths[columnIndex] = updatedWidth;
         }
       });
     };
@@ -233,8 +233,8 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
   // Drag-and-drop column reorder
   onColumnDrop(event: CdkDragDrop<any[]>) {
-    moveItemInArray(this.columnDefinitions, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.columnWidths, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.headers, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.headersWidths, event.previousIndex, event.currentIndex);
     this.persistGridConfig();
 
     const trashArea = document.querySelector('.trash-columns') as HTMLElement;
@@ -251,8 +251,8 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   // Persist and retrieve layout settings
   private persistGridConfig() {
     const config = {
-      headers: this.columnDefinitions,
-      columnWidths: this.columnWidths
+      headers: this.headers,
+      columnWidths: this.headersWidths
     };
     localStorage.setItem(this.localStorageKey, JSON.stringify(config));
   }
@@ -263,8 +263,8 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       try {
         const config = JSON.parse(stored);
         if (config?.headers && config?.columnWidths) {
-          this.columnDefinitions = config.headers;
-          this.columnWidths = config.columnWidths;
+          this.headers = config.headers;
+          this.headersWidths = config.columnWidths;
         }
       } catch (err) {
         console.error('Erro ao carregar configuração da tabela:', err);

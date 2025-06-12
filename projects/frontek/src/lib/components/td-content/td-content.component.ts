@@ -11,7 +11,7 @@ export class TdContentComponent {
   @Input() data:any = {};
 
   ngOnInit() {
-    console.log('Data received in TdContentComponent:', this.data);
+    // console.log('Data received in TdContentComponent:', this.data);
   }
 
   hexToRgba(hex: string, alpha: number): string {

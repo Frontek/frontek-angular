@@ -95,10 +95,6 @@ table {
   width: 100%;
 }
 
-.custom-thead {
-  width: 100%;
-}
-
 tbody {
   width: 100%;
   position: relative;
@@ -148,19 +144,18 @@ th:nth-last-child(1),td:nth-last-child(1)  {
   border-bottom-right-radius: 1rem;
 }
 
-
 td.no-border {
   border: none !important;
 }
 
 /* Header content layout */
-.header-content {
+.space-between {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.options-box {
+.d-flex {
   display: flex;
 }
 
@@ -193,10 +188,10 @@ td.no-border {
 }
 
 /* Dropdown cell for expanding row */
-.dropdown-header-th {
+.fixed-width {
   width: 50px;
 }
-
+fixed
 /* Toggle arrow animation */
 .dropdown-handle-box {
   display: flex;
