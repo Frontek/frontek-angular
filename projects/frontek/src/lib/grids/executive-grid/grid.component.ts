@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 import { TdContentComponent } from '../../components/td-content/td-content.component';
-import { TableData } from './interfaces/interfaces';
+import { TableData,Headers, TableStyles, FilterConfig } from './interfaces/interfaces';
 
 @Component({
   selector: 'executive-grid-component',
@@ -15,44 +15,14 @@ import { TableData } from './interfaces/interfaces';
 })
 export class ExecutiveGridComponent implements OnInit, OnChanges {
   // Input properties
-  @Input() columnDefinitions: { field: string, header: string }[] = [];
-  @Input() subColumnDefinitions: { field: string, header: string }[] = [];
-  @Input() filter: { fieldToFilter: string, filters: { value: string, label: string }[] } = {
-  fieldToFilter: '',
-  filters: []
-};
+  @Input() columnDefinitions: Headers = [];
+  @Input() subColumnDefinitions: Headers = [];
+  @Input() filter: FilterConfig = {fieldToFilter: '',filters: []}
 
   @Input() rowData: TableData  = [];
   @Input() tableIdentifier: string = "frontek-grid-executive";
 
-  @Input() styles: {
-    thead?:{
-      fontSize?: string;
-      fontColor?: string;
-      bgColor?: string;
-      bgColorHover?: string;
-      textAlignment?: string;
-    },
-    tbody?:{
-      fontSize?: string;
-      fontColor?: string;
-      bgColor?: string;
-      bgColorHover?: string;
-      textAlignment?: string;
-    },
-    filterBox?:{
-      fontSize?: string;
-      fontColor?: string;
-      bgColor?: string;
-      bgColorHover?: string;
-    },
-    search?:{
-      fontSize?: string;
-      iconSize?: string;
-      fontColor?: string;
-      text?: string;
-    }
-  } = {
+  @Input() styles:TableStyles = {
     thead: {
       fontSize: '15px',
       fontColor: '#fff',
