@@ -26,7 +26,7 @@ export interface HeadersStyle {
   textAlignment?: string;
 }
 export interface Header {
-  id?:number;
+  id:number;
   field: string;
   header: string;
   styles? : HeadersStyle
@@ -34,7 +34,7 @@ export interface Header {
 
 export interface TableConfig {
   headers?: Header[];
-  subheaders?: Header[]; // Se quiser manter subheaders
+  subheaders?: Header[];
 }
 export interface TableSectionStyle {
   fontSize?: string;

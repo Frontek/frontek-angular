@@ -64,7 +64,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   input: Record<string, string> = {};
 
   // Column sizes
-  headersWidths?: number[] = [];
+  headersWidths: { [id: number]: number } = {};
   subHeadersWidths?: number[] = [];
   headerHovered: boolean[] = [];
   bodyHovered: boolean[] = [];
@@ -82,23 +82,8 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    // this.filteredData = [...this.rowData];
-
-    const existingHeadersIds = new Set<number>(
-      this.tableHeaders.headers?.map(h => h.id).filter(id => id !== undefined) as number[]
-    );
-    const existingDatasIds = new Set<number>(
-      this.filteredData.map(row => row.map(item => item.id)).flat().filter(id => id !== undefined) as number[]
-    );
-
-    if (this.headersWidths?.length === 0) {
-      this.headersWidths = this.tableHeaders.headers?.map(() => 200);
-    }
-
-    if (this.subHeadersWidths?.length === 0) {
-      this.subHeadersWidths = this.tableHeaders.subheaders?.map(() => 200);
-    }
-
+    const existingHeadersIds = new Set<number>(this.tableHeaders.headers?.map(h => h.id).filter(id => id !== undefined) as number[]);
+    const existingDatasIds = new Set<number>(this.filteredData.map(row => row.map(item => item.id)).flat().filter(id => id !== undefined) as number[]);
 
     this.tableHeaders.headers = this.tableHeaders.headers?.map((header, index) => {
       return {...header,id:header.id || this.idGenerator(existingHeadersIds,existingDatasIds,'header')};
@@ -110,8 +95,15 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       });
     });
 
-    console.log('headers:', this.tableHeaders.headers);
-    console.log('datas:', this.filteredData);
+    if (this.subHeadersWidths?.length === 0) {
+      this.subHeadersWidths = this.tableHeaders.subheaders?.map(() => 200);
+    }
+
+
+    this.headersWidths = Object.fromEntries(
+      this.tableHeaders.headers?.map(header => [header.id!, 200]) ?? []
+    );
+
   }
 
   ngOnChanges() {
@@ -242,17 +234,17 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
       requestAnimationFrame(() => {
         const headerRow = document.querySelector('.thead tr') as HTMLElement;
-        const totalColumnWidth = this.headersWidths?.reduce((sum, width) => sum + width, 0) || 0;
+        // const totalColumnWidth = this.headersWidths?.reduce((sum, width) => sum + width, 0) || 0;
         const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
 
-        if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
-          document.removeEventListener('mousemove', onMouseMove);
-          return;
-        } else {
-          if (this.headersWidths) {
-            this.headersWidths[columnIndex] = updatedWidth;
-          }
-        }
+        // if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
+        //   document.removeEventListener('mousemove', onMouseMove);
+        //   return;
+        // } else {
+        //   if (this.headersWidths) {
+        //     this.headersWidths[columnIndex] = updatedWidth;
+        //   }
+        // }
       });
     };
 
@@ -275,22 +267,22 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       const deltaX = moveEvent.pageX - startX;
       const updatedWidth = Math.max(initialWidth + deltaX, 150);
 
-      requestAnimationFrame(() => {
-        const headerRow = document.querySelector('.custom-thead tr') as HTMLElement;
-        const totalColumnWidth = this.subHeadersWidths?.reduce((sum, width) => sum + width, 0) || 0;
-        const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
+      // requestAnimationFrame(() => {
+      //   const headerRow = document.querySelector('.custom-thead tr') as HTMLElement;
+      //   const totalColumnWidth = this.subHeadersWidths?.reduce((sum, width) => sum + width, 0) || 0;
+      //   const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
 
-        console.log('Header row width:', headerRowWidth);
+      //   console.log('Header row width:', headerRowWidth);
 
-        if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
-          document.removeEventListener('mousemove', onMouseMove);
-          return;
-        } else {
-          if (this.subHeadersWidths) {
-            this.subHeadersWidths[columnIndex] = updatedWidth;
-          }
-        }
-      });
+      //   if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
+      //     document.removeEventListener('mousemove', onMouseMove);
+      //     return;
+      //   } else {
+      //     if (this.subHeadersWidths) {
+      //       this.subHeadersWidths[columnIndex] = updatedWidth;
+      //     }
+      //   }
+      // });
     };
 
     const onMouseUp = () => {
@@ -310,7 +302,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   // Drag-and-drop column reorder
   onColumnDrop(event: CdkDragDrop<any[]>) {
     moveItemInArray(this.tableHeaders.headers || [], event.previousIndex, event.currentIndex);
-    moveItemInArray(this.headersWidths || [], event.previousIndex, event.currentIndex);
+    // moveItemInArray(this.headersWidths || [], event.previousIndex, event.currentIndex);
     this.persistGridConfig();
 
     const trashArea = document.querySelector('.trash-columns') as HTMLElement;
