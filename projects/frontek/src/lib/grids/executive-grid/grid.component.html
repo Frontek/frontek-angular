@@ -16,15 +16,14 @@
 <div class="container" [ngStyle]="tbodyStyle">
   <div class="container-body">
     <table [ngStyle]="tableStyle">
-      <thead>
-        <tr
-          cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onColumnDrop($event)">
+      <thead class="thead">
+        <tr cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onColumnDrop($event)">
           <th class="fixed-width" [ngStyle]="theadStyle"></th>
           <th *ngFor="let header of headers; let i = index" cdkDrag (cdkDragStarted)="onColumnDragStart()" [style.width.px]="headersWidths[i]" [ngStyle]="theadStyle" (mouseenter)="onHeaderHover($event, i, true)" (mouseleave)="onHeaderHover($event, i, false)">
             <div class="space-between">
               <span>{{ header.header }}</span>
               <div class="d-flex">
-                  <span (mousedown)="onColumnResizeStart($event, i); $event.stopPropagation();" class="material-symbols-outlined">drag_indicator</span>
+                  <span (mousedown)="onColumnResizeStart($event, i); $event.stopPropagation();" class="material-symbols-outlined cursor-resize">drag_indicator</span>
               </div>
             </div>
           </th>

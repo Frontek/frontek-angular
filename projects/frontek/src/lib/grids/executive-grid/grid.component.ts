@@ -164,7 +164,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       const updatedWidth = Math.max(initialWidth + deltaX, 150);
 
       requestAnimationFrame(() => {
-        const headerRow = document.querySelector('.custom-thead tr') as HTMLElement;
+        const headerRow = document.querySelector('.thead tr') as HTMLElement;
         const totalColumnWidth = this.headersWidths.reduce((sum, width) => sum + width, 0);
         const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
 
@@ -172,8 +172,8 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
           document.removeEventListener('mousemove', onMouseMove);
           return;
         } else {
-          this.headersWidths[columnIndex] = updatedWidth;
         }
+        this.headersWidths[columnIndex] = updatedWidth;
       });
     };
 
