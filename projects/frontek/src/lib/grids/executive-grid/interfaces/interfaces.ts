@@ -72,3 +72,11 @@ export interface FilterConfig {
   fieldToFilter: string;
   filters: FilterOption[];
 }
+
+
+export interface Configs {
+  borderColor?: string;
+  hoverColorOnDatas?: string;
+  bgColor?: string;
+  fontFamily?: string;
+}

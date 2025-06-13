@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 import { TdContentComponent } from '../../components/td-content/td-content.component';
-import { TableData, TableStyles, FilterConfig, TableConfig, HeadersStyle } from './interfaces/interfaces';
+import { TableData, TableStyles, FilterConfig, TableConfig, HeadersStyle, Configs } from './interfaces/interfaces';
 
 @Component({
   selector: 'executive-grid-component',
@@ -19,6 +19,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     headers: [],
     subheaders: []
   }
+  @Input() configs: Configs = {}
   @Input() filter: FilterConfig = {fieldToFilter: '',filters: []}
 
   @Input() rowData: TableData  = [];
@@ -54,21 +55,19 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   };
 
   // Style bindings
-  tableStyle: Record<string, string> = {};
   subtableStyle: Record<string, string> = {};
   subtheadStyle: Record<string, string> = {};
-  tbodyStyle: Record<string, string> = {};
   subtbodyStyle: Record<string, string> = {};
   searchIcon: Record<string, string> = {};
   filtersBox: Record<string, string> = {};
   activeFilter: Record<string, string> = {};
   input: Record<string, string> = {};
-  trWithDropStyle: Record<string, string> = {};
 
   // Column sizes
   headersWidths?: number[] = [];
   subHeadersWidths?: number[] = [];
-  isHovered: boolean[] = [];
+  headerHovered: boolean[] = [];
+  bodyHovered: boolean[] = [];
 
   expandedRows: Set<number> = new Set();
   expandedRowsHeight: { [key: number]: string } = {};
@@ -101,24 +100,11 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.tableStyle = {
-      'font-size': `${this.styles.tbody?.fontSize}`,
-      'font-family': 'Arial, sans-serif',
-    };
-
     this.subtheadStyle = {
       'background-color': `${this.styles.thead?.bgColor}`,
       'font-size': `13px`,
       'color': `${this.styles.thead?.fontColor}`,
       'text-align': `${this.styles.thead?.textAlignment}`,
-    };
-
-    this.tbodyStyle = {
-      'width': '100%',
-      'background-color': `${this.styles.tbody?.bgColor}`,
-      'font-size': `${this.styles.tbody?.fontSize}`,
-      'color': `${this.styles.tbody?.fontColor}`,
-      'text-align': `${this.styles.tbody?.textAlignment}`,
     };
     this.subtbodyStyle = {
       'background-color': `${this.styles.tbody?.bgColor}`,
@@ -144,21 +130,57 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       'font-size': `${this.styles.search?.fontSize}`,
       'color': `${this.styles.search?.fontColor}`,
     };
-    this.trWithDropStyle = {
-      'border-bottom': `1px solid ${this.styles.thead?.bgColorHover}`,
-    }
   }
 
-    getStyle(style:HeadersStyle,isHovered:boolean = false){
-      return{
-        'background-color': isHovered ? (style.bgColorHover || '#4a5568') : (style.bgColor || '#2F3845'),
-        'font-size': style.fontSize || '14px',
-        'color': style.fontColor || '#fff',
+
+
+    getStyle(style:HeadersStyle ,isHovered:boolean = false,elementType:string = ""){
+      let obj;
+      if(!elementType) {
+        obj= {
+            'background-color': isHovered ? (style.bgColorHover || '#4a5568') : (style.bgColor || '#2F3845'),
+            'font-size': style.fontSize || '14px',
+            'color': style.fontColor || '#fff',
+          }
       }
+
+      return obj;
     }
 
-    onHeaderHover(index: number, hovering: boolean) {
-      this.isHovered[index] = hovering;
+    getConfigStyles(style:Configs ,isHovered:boolean = false,elementType:string){
+      let obj;
+
+      switch (elementType) {
+        case 'container':
+          obj = {
+            'background-color': style.bgColor || '#1D2634',
+          };
+          break;
+        case 'table':
+          obj = {
+            'font-family': style.fontFamily || 'Arial, sans-serif',
+          };
+          break;
+        case 'tr':
+          obj = {
+            'border-bottom': `1px solid ${style.borderColor || '#2F3845'}`,
+            'background-color': isHovered ? style.hoverColorOnDatas || '#2F3845' : style.bgColor || '#1D2634',
+          };
+          break;
+        }
+
+      return obj;
+    }
+
+    onHover(index: number, hovering: boolean,elementType:string) {
+      switch (elementType) {
+        case 'th':
+          this.headerHovered[index] = hovering;
+          break;
+        case 'tr':
+          this.bodyHovered[index] = hovering;
+          break;
+        }
     }
 
     toggleRowExpansion(index: number): void {
@@ -168,6 +190,15 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
         this.expandedRows.add(index);
       }
     }
+
+    isRowExpanded(index: number): boolean {
+      return this.expandedRows.has(index);
+    }
+
+
+
+
+
 
   // Column Resize Handler
   onColumnResizeStart(event: MouseEvent, columnIndex: number) {
@@ -292,13 +323,6 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     const arrowIcon = event.target as HTMLElement;
     arrowIcon.classList.toggle('closed');
     arrowIcon.classList.toggle('opened');
-  }
-
-
-
-  // Função opcional para simplificar a verificação no template
-  isRowExpanded(index: number): boolean {
-    return this.expandedRows.has(index);
   }
 
   findData() {

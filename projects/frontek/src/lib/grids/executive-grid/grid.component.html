@@ -99,13 +99,13 @@
   </div>
 </div>
 
-<div class="container" [ngStyle]="tbodyStyle">
+<div class="container" [ngStyle]="getConfigStyles(configs,false,'container')">
   <div class="container-body">
-    <table [ngStyle]="tableStyle">
+    <table [ngStyle]="getConfigStyles(configs,false,'table')">
       <thead class="thead">
         <tr cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onColumnDrop($event)">
           <th class="fixed-width"></th>
-          <th *ngFor="let header of tableHeaders.headers; let i = index" cdkDrag (cdkDragStarted)="onColumnDragStart()"[ngStyle]="getStyle(header.styles || {},isHovered[i])" (mouseenter)="onHeaderHover(i, true)" (mouseleave)="onHeaderHover( i, false)"[style.width.px]="headersWidths?.[i] ?? 0">
+          <th *ngFor="let header of tableHeaders.headers; let i = index" cdkDrag (cdkDragStarted)="onColumnDragStart()"[ngStyle]="getStyle(header.styles || {},headerHovered[i])" (mouseenter)="onHover(i, true,'th')" (mouseleave)="onHover( i, false,'th')"[style.width.px]="headersWidths?.[i] ?? 0">
             <div class="space-between">
               <span>{{ header.header }}</span>
               <div class="d-flex">
@@ -120,7 +120,7 @@
       <tbody>
           <div class="trash-columns"><span class="material-symbols-outlined">restore_from_trash</span></div>
         <ng-container *ngFor="let data of filteredData; let i = index">
-          <tr [ngStyle]="trWithDropStyle" (mouseenter)="onTrHover($event, i, true)" (mouseleave)="onTrHover($event, i, false)" [class.removeBorderBottom]="expandedRows.has(i)">
+          <tr [ngStyle]="getConfigStyles(configs,bodyHovered[i],'tr')" [class.removeBorderBottom]="expandedRows.has(i)" (mouseenter)="onHover(i, true,'tr')" (mouseleave)="onHover( i, false,'tr')">
             <td>
               <div (click)="toggleRowExpansion(i)">
                 <span [ngClass]="{ closed: !expandedRows.has(i), opened: expandedRows.has(i) }" class="material-symbols-outlined dropdown-handle closed">arrow_drop_down</span>
@@ -135,14 +135,14 @@
             <td class="no-border"></td>
           </tr>
 
-          <tr data-id="{{i}}" class="expandable-row"[class.opened]="expandedRows.has(i)" [ngStyle]="trWithDropStyle">
+          <tr class="expandable-row"[class.opened]="expandedRows.has(i)" [ngStyle]="getConfigStyles(configs,bodyHovered[i],'tr')">
             <td class="expanded-cell " [attr.colspan]="(tableHeaders.headers?.length ?? 0) + 2" >
               <div class="subtable-wrapper" [class.expanded]="expandedRows.has(i)" >
                 <table>
                   <thead>
                     <tr>
                       <th
-                        *ngFor="let column of tableHeaders.subheaders; let i = index" [ngStyle]="subtheadStyle" [style.width.px]="subHeadersWidths?.[i] ?? 0" (mouseenter)="onHeaderHover( i, true)" (mouseleave)="onHeaderHover( i, false)">
+                        *ngFor="let column of tableHeaders.subheaders; let i = index" [ngStyle]="subtheadStyle" [style.width.px]="subHeadersWidths?.[i] ?? 0" (mouseenter)="onHover( i, true,'th')" (mouseleave)="onHover( i, false,'th')">
                          <div class="space-between">
                           <span>{{ column.header }}</span>
                           <div class="d-flex">
@@ -154,7 +154,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="subtable-row" data-id="{{i}}" [ngStyle]="subtbodyStyle" (mouseenter)="onTrHover($event, i, true)" (mouseleave)="onTrHover($event, i, false)">
+                    <tr class="subtable-row" data-id="{{i}}" (mouseenter)="onTrHover($event, i, true)" (mouseleave)="onTrHover($event, i, false)">
                       <td *ngFor="let subcolumn of tableHeaders.subheaders; let i = index" [style.width.px]="subHeadersWidths?.[i] ?? 200" > </td>
                       <td class="no-border"></td>
                     </tr>
