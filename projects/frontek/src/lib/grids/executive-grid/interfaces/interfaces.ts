@@ -17,9 +17,17 @@ export interface FieldItem {
 export type RowData = FieldItem[];
 export type TableData = RowData[];
 
+export interface HeadersStyle {
+  fontSize?: string;
+  fontColor?: string;
+  bgColor?: string;
+  bgColorHover?: string;
+  textAlignment?: string;
+}
 export interface Header {
   field: string;
   header: string;
+  styles? : HeadersStyle
 }
 
 export interface TableConfig {

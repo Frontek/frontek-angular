@@ -1,4 +1,4 @@
-<div class="filters-head">
+<!-- <div class="filters-head">
   <div [ngStyle]="filtersBox" class="filters-box">
     <label *ngFor="let filter of filter.filters; let i = index"
       class="label"
@@ -66,6 +66,92 @@
                         </div>
                       </th>
                       <th [ngStyle]="theadStyle"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="subtable-row" data-id="{{i}}" [ngStyle]="subtbodyStyle" (mouseenter)="onTrHover($event, i, true)" (mouseleave)="onTrHover($event, i, false)">
+                      <td *ngFor="let subcolumn of tableHeaders.subheaders; let i = index" [style.width.px]="subHeadersWidths?.[i] ?? 200" > </td>
+                      <td class="no-border"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div> -->
+
+<div class="filters-head">
+  <div [ngStyle]="filtersBox" class="filters-box">
+    <label *ngFor="let filter of filter.filters; let i = index"
+      class="label"
+      (click)="onFilterChange($event,filter.value)"
+      [ngStyle]="activeFilterValue === filter.value ? activeFilter : null">
+      {{ filter.label }}
+    </label>
+  </div>
+  <div class="search-box">
+    <label class="search-label" for="search"><span [ngStyle]="searchIcon" class="material-symbols-outlined">search</span></label>
+    <input [(ngModel)]="searchTerm" (ngModelChange)="findData()" [ngStyle]="input" id="search" class="search-input" type="text" placeholder="Buscar..." />
+  </div>
+</div>
+
+<div class="container" [ngStyle]="tbodyStyle">
+  <div class="container-body">
+    <table [ngStyle]="tableStyle">
+      <thead class="thead">
+        <tr cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onColumnDrop($event)">
+          <th class="fixed-width"></th>
+          <th *ngFor="let header of tableHeaders.headers; let i = index" cdkDrag (cdkDragStarted)="onColumnDragStart()"[ngStyle]="getStyle(header.styles || {},isHovered[i])" (mouseenter)="onHeaderHover(i, true)" (mouseleave)="onHeaderHover( i, false)"[style.width.px]="headersWidths?.[i] ?? 0">
+            <div class="space-between">
+              <span>{{ header.header }}</span>
+              <div class="d-flex">
+                  <span (mousedown)="onColumnResizeStart($event, i); $event.stopPropagation();" class="material-symbols-outlined cursor-resize">drag_indicator</span>
+              </div>
+            </div>
+          </th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+          <div class="trash-columns"><span class="material-symbols-outlined">restore_from_trash</span></div>
+        <ng-container *ngFor="let data of filteredData; let i = index">
+          <tr [ngStyle]="trWithDropStyle" (mouseenter)="onTrHover($event, i, true)" (mouseleave)="onTrHover($event, i, false)" [class.removeBorderBottom]="expandedRows.has(i)">
+            <td>
+              <div (click)="toggleRowExpansion(i)" class="dropdown-handle-box" [ngClass]="{ closed: !expandedRows.has(i), opened: expandedRows.has(i) }">
+                <span class="material-symbols-outlined">chevron_right</span>
+              </div>
+            </td>
+
+            <td *ngFor="let header of tableHeaders.headers; let i = index" [style.width.px]="headersWidths?.[i] ?? 0"class="td-content">
+              <ng-container *ngFor="let dataObj of data">
+                <td-content *ngIf="header['field'] == dataObj['field']" [data]="dataObj['content']"></td-content>
+              </ng-container>
+            </td>
+            <td class="no-border"></td>
+          </tr>
+
+          <tr data-id="{{i}}" class="expandable-row"[class.opened]="expandedRows.has(i)" [ngStyle]="trWithDropStyle">
+            <td
+              class="expanded-cell " [attr.colspan]="(tableHeaders.headers?.length ?? 0) + 2" >
+              <div class="subtable-wrapper" [class.expanded]="expandedRows.has(i)" >
+                <table>
+                  <thead>
+                    <tr>
+                      <th
+                        *ngFor="let column of tableHeaders.subheaders; let i = index" [ngStyle]="subtheadStyle" [style.width.px]="subHeadersWidths?.[i] ?? 0" (mouseenter)="onHeaderHover( i, true)" (mouseleave)="onHeaderHover( i, false)">
+                         <div class="space-between">
+                          <span>{{ column.header }}</span>
+                          <div class="d-flex">
+                            <span (mousedown)="onSubColumnResizeStart($event, i); $event.stopPropagation();" class="material-symbols-outlined resize">drag_indicator</span>
+                          </div>
+                        </div>
+                      </th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
