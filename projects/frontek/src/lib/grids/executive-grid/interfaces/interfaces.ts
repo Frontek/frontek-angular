@@ -22,8 +22,10 @@ export interface Header {
   header: string;
 }
 
-export type Headers = Header[];
-
+export interface TableConfig {
+  headers?: Header[];
+  subheaders?: Header[]; // Se quiser manter subheaders
+}
 export interface TableSectionStyle {
   fontSize?: string;
   fontColor?: string;

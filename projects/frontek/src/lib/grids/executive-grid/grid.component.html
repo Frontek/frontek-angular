@@ -19,7 +19,7 @@
       <thead class="thead">
         <tr cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onColumnDrop($event)">
           <th class="fixed-width" [ngStyle]="theadStyle"></th>
-          <th *ngFor="let header of headers; let i = index" cdkDrag (cdkDragStarted)="onColumnDragStart()" [style.width.px]="headersWidths[i]" [ngStyle]="theadStyle" (mouseenter)="onHeaderHover($event, i, true)" (mouseleave)="onHeaderHover($event, i, false)">
+          <th *ngFor="let header of tableHeaders.headers; let i = index" cdkDrag (cdkDragStarted)="onColumnDragStart()" [style.width.px]="headersWidths?.[i] ?? 0" [ngStyle]="theadStyle" (mouseenter)="onHeaderHover($event, i, true)" (mouseleave)="onHeaderHover($event, i, false)">
             <div class="space-between">
               <span>{{ header.header }}</span>
               <div class="d-flex">
@@ -34,7 +34,6 @@
       <tbody>
           <div class="trash-columns"><span class="material-symbols-outlined">restore_from_trash</span></div>
         <ng-container *ngFor="let data of filteredData; let i = index">
-          <!-- Primary Row -->
           <tr [ngStyle]="trWithDropStyle" (mouseenter)="onTrHover($event, i, true)" (mouseleave)="onTrHover($event, i, false)" [class.removeBorderBottom]="expandedRows.has(i)">
             <td>
               <div (click)="toggleRowExpansion(i)" class="dropdown-handle-box" [ngClass]="{ closed: !expandedRows.has(i), opened: expandedRows.has(i) }">
@@ -42,7 +41,7 @@
               </div>
             </td>
 
-            <td *ngFor="let header of headers; let i = index" [style.width.px]="headersWidths[i]" [attr.data-id]="i" class="td-content">
+            <td *ngFor="let header of tableHeaders.headers; let i = index" [style.width.px]="headersWidths?.[i] ?? 0" [attr.data-id]="i" class="td-content">
               <ng-container *ngFor="let dataObj of data">
                 <td-content *ngIf="header['field'] == dataObj['field']" [data]="dataObj['content']"></td-content>
               </ng-container>
@@ -52,13 +51,13 @@
 
           <tr data-id="{{i}}" class="expandable-row"[class.opened]="expandedRows.has(i)" [ngStyle]="trWithDropStyle">
             <td
-              class="expanded-cell " [attr.colspan]="headers.length + 2" >
+              class="expanded-cell " [attr.colspan]="(tableHeaders.headers?.length ?? 0) + 2" >
               <div class="subtable-wrapper" [class.expanded]="expandedRows.has(i)" >
                 <table>
                   <thead>
                     <tr>
                       <th
-                        *ngFor="let column of subColumnDefinitions; let i = index" [ngStyle]="subtheadStyle" [style.width.px]="subHeadersWidths[i]" (mouseenter)="onHeaderHover($event, i, true)" (mouseleave)="onHeaderHover($event, i, false)">
+                        *ngFor="let column of tableHeaders.subheaders; let i = index" [ngStyle]="subtheadStyle" [style.width.px]="subHeadersWidths?.[i] ?? 0" (mouseenter)="onHeaderHover($event, i, true)" (mouseleave)="onHeaderHover($event, i, false)">
                          <div class="space-between">
                           <span>{{ column.header }}</span>
                           <div class="d-flex">
@@ -71,7 +70,7 @@
                   </thead>
                   <tbody>
                     <tr class="subtable-row" data-id="{{i}}" [ngStyle]="subtbodyStyle" (mouseenter)="onTrHover($event, i, true)" (mouseleave)="onTrHover($event, i, false)">
-                      <td *ngFor="let subcolumn of subColumnDefinitions; let i = index" [style.width.px]="subHeadersWidths[i]" > </td>
+                      <td *ngFor="let subcolumn of tableHeaders.subheaders; let i = index" [style.width.px]="subHeadersWidths?.[i] ?? 200" > </td>
                       <td class="no-border"></td>
                     </tr>
                   </tbody>

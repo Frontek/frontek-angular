@@ -3,42 +3,38 @@ import { SimpleGridComponent,ExecutiveGridComponent } from '../../projects/front
 
 @Component({
   selector: 'app-root',
-  imports: [SimpleGridComponent,ExecutiveGridComponent],
+  imports: [ExecutiveGridComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'frontek-angular';
 
-  headers = [
-    { field: 'item', header: 'MLB' },
-    // { field: 'fornecedor', header: 'Fornecedor' },
-    // { field: 'envio', header: 'Envio' },
-    // { field: 'status', header: 'Status' },
-    // { field: 'preco_ativo', header: 'Preço Ativo' },
-    // { field: 'margem_ativa', header: 'Margem Ativa' },
-    // { field: 'preco_ganhar_catalogo', header: 'Preço Ganhar Catálogo' },
-    // { field: 'margem_ganhar_catalogo', header: 'Margem Ganhar Catálogo' },
-    // { field: 'margem_minima', header: 'Margem Mínima' },
-    // { field: 'margem_objetivo', header: 'Margem Objetivo' },
-    // { field: 'comissao', header: 'Comissão' },
-    // { field: 'imposto', header: 'Imposto' },
-    // { field: 'taxa_fixa', header: 'Taxa Fixa' },
-    // { field: 'frete', header: 'Frete' },
-    // { field: 'custo_sku', header: 'Custo Sku' },
-  ];
-
-  subheaders = [
-    { field: 'nome', header: 'Nome' },
-    { field: 'tipo', header: 'Tipo' },
-    { field: 'ativo', header: 'Ativo' },
-    { field: 'margem', header: 'Margem' },
-    { field: 'rebate', header: 'Rebate' },
-    { field: 'data_inicio', header: 'Data Inicio' },
-    { field: 'data_termino', header: 'Data Término' },
-    { field: 'campanha_valida', header: 'Campanha Válida' },
-    { field: 'comissao_vendedor', header: 'Comissão Vendedor' },
-  ];
+  // headers = [
+  //   { field: 'item', header: 'MLB' },
+  //   { field: 'fornecedor', header: 'Fornecedor' },
+  //   { field: 'envio', header: 'Envio' },
+  //   { field: 'status', header: 'Status' },
+  //   { field: 'preco_ativo', header: 'Preço Ativo' },
+  //   { field: 'margem_ativa', header: 'Margem Ativa' },
+  //   { field: 'preco_ganhar_catalogo', header: 'Preço Ganhar Catálogo' },
+  //   { field: 'margem_ganhar_catalogo', header: 'Margem Ganhar Catálogo' },
+  //   { field: 'margem_minima', header: 'Margem Mínima' },
+  //   { field: 'margem_objetivo', header: 'Margem Objetivo' },
+  //   { field: 'comissao', header: 'Comissão' },
+  //   { field: 'imposto', header: 'Imposto' },
+  //   { field: 'taxa_fixa', header: 'Taxa Fixa' },
+  //   { field: 'frete', header: 'Frete' },
+  //   { field: 'custo_sku', header: 'Custo Sku' },
+  // ];
+  headers = {
+    headers:[
+      { field: 'item', header: 'MLB' }
+    ],
+    subheaders: [
+      { field: 'fornecedor', header: 'Fornecedor' },
+    ]
+  }
 
   filter = {
     fieldToFilter: 'status',
@@ -69,36 +65,6 @@ export class AppComponent {
 
    ]
   ]
-
-  // data = [
-  //   {
-  //     fullName: {
-  //       text: 'Alice',
-  //       image: `https://http2.mlstatic.com/D_NQ_NP_783991-MLB84824567917_052025-O-cadeira-kappesberg-sala-de-jantar-cozinha-metal-marrom-2-un.webp`,
-  //       description: 'De Abreu'
-  //     },
-  //     department: {
-  //       text: 'Marketing',
-  //       tags:[
-  //         { text: 'Digital Marketing' },
-  //         { text: 'Content Creation' },
-  //         { text: 'SEO' }
-  //       ]
-  //     },
-  //     position: { text: 'Marketing Strategist'},
-  //     email: { text: 'Alice@gmail.com'},
-  //     phone: { text: '555-1234'},
-  //     office: { text: 'New York Office'},
-  //     hireDate: { text: '2020-05-15'},
-  //     employeeId: { text: 'EMP001'},
-  //     status: { text:'Active',type:'badge', color: 'green' },
-  //     subdatas: {
-  //       projectName: 'Product Launch Q3',
-  //       role: 'Lead Strategist',
-  //       status: 'In Progress'
-  //     }
-  //   },
-  // ];
 
   headerBackgroundColor = 'lightgray';
   bodyBackgroundColor = 'red';

@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 import { TdContentComponent } from '../../components/td-content/td-content.component';
-import { TableData,Headers, TableStyles, FilterConfig } from './interfaces/interfaces';
+import { TableData, TableStyles, FilterConfig, TableConfig } from './interfaces/interfaces';
 
 @Component({
   selector: 'executive-grid-component',
@@ -15,8 +15,10 @@ import { TableData,Headers, TableStyles, FilterConfig } from './interfaces/inter
 })
 export class ExecutiveGridComponent implements OnInit, OnChanges {
   // Input properties
-  @Input() headers: Headers = [];
-  @Input() subColumnDefinitions: Headers = [];
+  @Input() tableHeaders: TableConfig = {
+    headers: [],
+    subheaders: []
+  }
   @Input() filter: FilterConfig = {fieldToFilter: '',filters: []}
 
   @Input() rowData: TableData  = [];
@@ -65,8 +67,8 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   trWithDropStyle: Record<string, string> = {};
 
   // Column sizes
-  headersWidths: number[] = [];
-  subHeadersWidths: number[] = [];
+  headersWidths?: number[] = [];
+  subHeadersWidths?: number[] = [];
 
   expandedRows: Set<number> = new Set();
   expandedRowsHeight: { [key: number]: string } = {};
@@ -83,12 +85,12 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.filteredData = [...this.rowData];
 
-    if (this.headersWidths.length === 0) {
-      this.headersWidths = this.headers.map(() => 200);
+    if (this.headersWidths?.length === 0) {
+      this.headersWidths = this.tableHeaders.headers?.map(() => 200);
     }
 
-    if (this.subHeadersWidths.length === 0) {
-      this.subHeadersWidths = this.subColumnDefinitions.map(() => 200);
+    if (this.subHeadersWidths?.length === 0) {
+      this.subHeadersWidths = this.tableHeaders.subheaders?.map(() => 200);
     }
 
     // map para padroznar o value dos filters
@@ -157,7 +159,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   onColumnResizeStart(event: MouseEvent, columnIndex: number) {
     event.preventDefault();
     const startX = event.pageX;
-    const initialWidth = this.headersWidths[columnIndex];
+    const initialWidth = this.headersWidths ? this.headersWidths[columnIndex] : 200;
 
     const onMouseMove = (moveEvent: MouseEvent) => {
       const deltaX = moveEvent.pageX - startX;
@@ -165,15 +167,17 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
       requestAnimationFrame(() => {
         const headerRow = document.querySelector('.thead tr') as HTMLElement;
-        const totalColumnWidth = this.headersWidths.reduce((sum, width) => sum + width, 0);
+        const totalColumnWidth = this.headersWidths?.reduce((sum, width) => sum + width, 0) || 0;
         const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
 
         if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
           document.removeEventListener('mousemove', onMouseMove);
           return;
         } else {
+          if (this.headersWidths) {
+            this.headersWidths[columnIndex] = updatedWidth;
+          }
         }
-        this.headersWidths[columnIndex] = updatedWidth;
       });
     };
 
@@ -190,7 +194,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   onSubColumnResizeStart(event: MouseEvent, columnIndex: number) {
     event.preventDefault();
     const startX = event.pageX;
-    const initialWidth = this.subHeadersWidths[columnIndex];
+    const initialWidth = this.subHeadersWidths ? this.subHeadersWidths[columnIndex] : 200;
 
     const onMouseMove = (moveEvent: MouseEvent) => {
       const deltaX = moveEvent.pageX - startX;
@@ -198,7 +202,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
       requestAnimationFrame(() => {
         const headerRow = document.querySelector('.custom-thead tr') as HTMLElement;
-        const totalColumnWidth = this.headersWidths.reduce((sum, width) => sum + width, 0);
+        const totalColumnWidth = this.subHeadersWidths?.reduce((sum, width) => sum + width, 0) || 0;
         const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
 
         console.log('Header row width:', headerRowWidth);
@@ -207,7 +211,9 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
           document.removeEventListener('mousemove', onMouseMove);
           return;
         } else {
-          this.subHeadersWidths[columnIndex] = updatedWidth;
+          if (this.subHeadersWidths) {
+            this.subHeadersWidths[columnIndex] = updatedWidth;
+          }
         }
       });
     };
@@ -233,8 +239,8 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
   // Drag-and-drop column reorder
   onColumnDrop(event: CdkDragDrop<any[]>) {
-    moveItemInArray(this.headers, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.headersWidths, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.tableHeaders.headers || [], event.previousIndex, event.currentIndex);
+    moveItemInArray(this.headersWidths || [], event.previousIndex, event.currentIndex);
     this.persistGridConfig();
 
     const trashArea = document.querySelector('.trash-columns') as HTMLElement;
@@ -251,7 +257,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   // Persist and retrieve layout settings
   private persistGridConfig() {
     const config = {
-      headers: this.headers,
+      headers: this.tableHeaders.headers,
       columnWidths: this.headersWidths
     };
     localStorage.setItem(this.localStorageKey, JSON.stringify(config));
@@ -263,7 +269,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       try {
         const config = JSON.parse(stored);
         if (config?.headers && config?.columnWidths) {
-          this.headers = config.headers;
+          this.tableHeaders.headers = config.headers;
           this.headersWidths = config.columnWidths;
         }
       } catch (err) {
