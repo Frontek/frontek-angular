@@ -99,13 +99,13 @@
   </div>
 </div>
 
-<div class="container" [ngStyle]="getConfigStyles(configs,false,'container')">
+<div class="container"  [ngStyle]="getConfigStyles(configs,false,'container')">
   <div class="container-body">
     <table [ngStyle]="getConfigStyles(configs,false,'table')">
       <thead class="thead">
         <tr cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onColumnDrop($event)">
           <th class="fixed-width"></th>
-          <th *ngFor="let header of tableHeaders.headers;" cdkDrag (cdkDragStarted)="onColumnDragStart()"[ngStyle]="getStyle(header.styles || {},headerHovered[header.id])" (mouseenter)="onHover(header.id, true,'th')" (mouseleave)="onHover( header.id, false,'th')"[style.width.px]="headersWidths[header.id]">
+          <th *ngFor="let header of tableHeaders.headers;" cdkDrag [cdkDragData]="{ id:header.id }"  [ngStyle]="getStyle(header.styles || {},headerHovered[header.id])" (mouseenter)="onHover(header.id, true,'th')" (mouseleave)="onHover( header.id, false,'th')"[style.width.px]="headersWidths[header.id]">
             <div class="space-between">
               <span>{{ header.header }}</span>
               <div class="d-flex">
@@ -118,7 +118,6 @@
       </thead>
 
       <tbody>
-          <div class="trash-columns"><span class="material-symbols-outlined">restore_from_trash</span></div>
         <ng-container *ngFor="let data of filteredData; let i = index">
           <tr [ngStyle]="getConfigStyles(configs,bodyHovered[i],'tr')" [class.removeBorderBottom]="expandedRows.has(i)" (mouseenter)="onHover(i, true,'tr')" (mouseleave)="onHover( i, false,'tr')">
             <td>

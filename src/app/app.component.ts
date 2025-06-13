@@ -30,6 +30,7 @@ export class AppComponent {
   headers = {
     headers:[
       { field: 'item', header: 'MLB'},
+      { field: 'fornecedor', header: 'Fornecedor' }
     ],
     subheaders: [
       { field: 'fornecedor', header: 'Fornecedor' },

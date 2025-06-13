@@ -218,15 +218,27 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
         return id;
     }
 
+    onColumnDrop(event: CdkDragDrop<any>) {
+      const droppedItem = event.item;
+      const id = droppedItem.data.id;
+      if (!event.isPointerOverContainer) {
+          this.tableHeaders.headers = this.tableHeaders.headers?.filter(header => header.id !== id);
+          return;
+      }
+
+      if (event.previousIndex !== event.currentIndex) {
+        moveItemInArray(this.tableHeaders.headers || [], event.previousIndex, event.currentIndex);
+      }
+    }
 
 
 
 
   // Column Resize Handler
-  onColumnResizeStart(event: MouseEvent, columnIndex: number) {
+  onColumnResizeStart(event: MouseEvent, id: number) {
     event.preventDefault();
     const startX = event.pageX;
-    const initialWidth = this.headersWidths ? this.headersWidths[columnIndex] : 200;
+    const initialWidth = this.headersWidths ? this.headersWidths[id] : 200;
 
     const onMouseMove = (moveEvent: MouseEvent) => {
       const deltaX = moveEvent.pageX - startX;
@@ -234,17 +246,17 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
       requestAnimationFrame(() => {
         const headerRow = document.querySelector('.thead tr') as HTMLElement;
-        // const totalColumnWidth = this.headersWidths?.reduce((sum, width) => sum + width, 0) || 0;
+        const totalColumnWidth = Object.values(this.headersWidths).reduce((sum, width) => sum + width, 0);
         const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
 
-        // if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
-        //   document.removeEventListener('mousemove', onMouseMove);
-        //   return;
-        // } else {
-        //   if (this.headersWidths) {
-        //     this.headersWidths[columnIndex] = updatedWidth;
-        //   }
-        // }
+        if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
+          document.removeEventListener('mousemove', onMouseMove);
+          return;
+        } else {
+          if (this.headersWidths) {
+            this.headersWidths[id] = updatedWidth;
+          }
+        }
       });
     };
 
@@ -258,10 +270,10 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   }
 
   // Column Resize Handler
-  onSubColumnResizeStart(event: MouseEvent, columnIndex: number) {
+  onSubColumnResizeStart(event: MouseEvent, id: number) {
     event.preventDefault();
     const startX = event.pageX;
-    const initialWidth = this.subHeadersWidths ? this.subHeadersWidths[columnIndex] : 200;
+    const initialWidth = this.subHeadersWidths ? this.subHeadersWidths[id] : 200;
 
     const onMouseMove = (moveEvent: MouseEvent) => {
       const deltaX = moveEvent.pageX - startX;
@@ -279,7 +291,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       //     return;
       //   } else {
       //     if (this.subHeadersWidths) {
-      //       this.subHeadersWidths[columnIndex] = updatedWidth;
+      //       this.subHeadersWidths[id] = updatedWidth;
       //     }
       //   }
       // });
@@ -299,22 +311,6 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     element.style.backgroundColor = reset ? `${this.styles.tbody?.bgColorHover}` : `${this.styles.tbody?.bgColor}`;
   }
 
-  // Drag-and-drop column reorder
-  onColumnDrop(event: CdkDragDrop<any[]>) {
-    moveItemInArray(this.tableHeaders.headers || [], event.previousIndex, event.currentIndex);
-    // moveItemInArray(this.headersWidths || [], event.previousIndex, event.currentIndex);
-    this.persistGridConfig();
-
-    const trashArea = document.querySelector('.trash-columns') as HTMLElement;
-    trashArea.style.opacity = '0';
-    trashArea.style.left = '-100%';
-  }
-
-  onColumnDragStart() {
-    const trashArea = document.querySelector('.trash-columns') as HTMLElement;
-    trashArea.style.left = '0';
-    trashArea.style.opacity = '1';
-  }
 
   // Persist and retrieve layout settings
   private persistGridConfig() {
