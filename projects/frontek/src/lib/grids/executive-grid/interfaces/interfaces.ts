@@ -10,6 +10,7 @@ export interface FieldContent {
 }
 
 export interface FieldItem {
+  id?: number;
   field: string;
   content: FieldContent;
 }
@@ -25,6 +26,7 @@ export interface HeadersStyle {
   textAlignment?: string;
 }
 export interface Header {
+  id?:number;
   field: string;
   header: string;
   styles? : HeadersStyle

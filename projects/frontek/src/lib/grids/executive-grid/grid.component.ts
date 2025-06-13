@@ -82,7 +82,14 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.filteredData = [...this.rowData];
+    // this.filteredData = [...this.rowData];
+
+    const existingHeadersIds = new Set<number>(
+      this.tableHeaders.headers?.map(h => h.id).filter(id => id !== undefined) as number[]
+    );
+    const existingDatasIds = new Set<number>(
+      this.filteredData.map(row => row.map(item => item.id)).flat().filter(id => id !== undefined) as number[]
+    );
 
     if (this.headersWidths?.length === 0) {
       this.headersWidths = this.tableHeaders.headers?.map(() => 200);
@@ -92,11 +99,19 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       this.subHeadersWidths = this.tableHeaders.subheaders?.map(() => 200);
     }
 
-    // map para padroznar o value dos filters
-    this.filter.filters = this.filter.filters.map(f => ({
-      ...f,
-      value: f.value.toLowerCase().trim()
-    }));
+
+    this.tableHeaders.headers = this.tableHeaders.headers?.map((header, index) => {
+      return {...header,id:header.id || this.idGenerator(existingHeadersIds,existingDatasIds,'header')};
+    });
+
+    this.filteredData = this.rowData.map((row, rowIndex) => {
+      return row.map(item => {
+        return {...item, id: item.id || this.idGenerator(existingHeadersIds, existingDatasIds, 'data')};
+      });
+    });
+
+    console.log('headers:', this.tableHeaders.headers);
+    console.log('datas:', this.filteredData);
   }
 
   ngOnChanges() {
@@ -195,6 +210,21 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       return this.expandedRows.has(index);
     }
 
+    idGenerator(headersIDs: Set<number>,dataIDs: Set<number>,type:string): number {
+       let id;
+        do {
+          id = Math.floor(Math.random() * 1000000);
+        } while (headersIDs.has(id) || dataIDs.has(id));
+
+        if(type === 'data') {
+          dataIDs.add(id);
+        }
+        if(type === 'header') {
+          headersIDs.add(id);
+        }
+
+        return id;
+    }
 
 
 
