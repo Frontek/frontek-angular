@@ -109,7 +109,7 @@
             <div class="space-between">
               <span>{{ header.header }}</span>
               <div class="d-flex">
-                  <span (mousedown)="onColumnResizeStart($event, header.id!); $event.stopPropagation();" class="material-symbols-outlined cursor-resize">drag_indicator</span>
+                  <span (mousedown)="onColumnResizeStart($event, header.id); $event.stopPropagation();" class="material-symbols-outlined cursor-resize">drag_indicator</span>
               </div>
             </div>
           </th>
@@ -127,7 +127,7 @@
               </div>
             </td>
 
-            <td *ngFor="let header of tableHeaders.headers;" [style.width.px]="headersWidths?.[header.id] ?? 0"class="td-content">
+            <td *ngFor="let header of tableHeaders.headers;" [style.width.px]="headersWidths[header.id]"class="td-content">
               <ng-container *ngFor="let dataObj of data">
                 <td-content *ngIf="header['field'] == dataObj['field']" [data]="dataObj['content']"></td-content>
               </ng-container>
