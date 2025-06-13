@@ -161,6 +161,14 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       this.isHovered[index] = hovering;
     }
 
+    toggleRowExpansion(index: number): void {
+      if (this.expandedRows.has(index)) {
+        this.expandedRows.delete(index);
+      } else {
+        this.expandedRows.add(index);
+      }
+    }
+
   // Column Resize Handler
   onColumnResizeStart(event: MouseEvent, columnIndex: number) {
     event.preventDefault();
@@ -286,13 +294,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     arrowIcon.classList.toggle('opened');
   }
 
-  toggleRowExpansion(index: number): void {
-    if (this.expandedRows.has(index)) {
-      this.expandedRows.delete(index);
-    } else {
-      this.expandedRows.add(index);
-    }
-  }
+
 
   // Função opcional para simplificar a verificação no template
   isRowExpanded(index: number): boolean {

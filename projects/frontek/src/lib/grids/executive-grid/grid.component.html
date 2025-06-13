@@ -122,8 +122,8 @@
         <ng-container *ngFor="let data of filteredData; let i = index">
           <tr [ngStyle]="trWithDropStyle" (mouseenter)="onTrHover($event, i, true)" (mouseleave)="onTrHover($event, i, false)" [class.removeBorderBottom]="expandedRows.has(i)">
             <td>
-              <div (click)="toggleRowExpansion(i)" class="dropdown-handle-box" [ngClass]="{ closed: !expandedRows.has(i), opened: expandedRows.has(i) }">
-                <span class="material-symbols-outlined">chevron_right</span>
+              <div (click)="toggleRowExpansion(i)">
+                <span [ngClass]="{ closed: !expandedRows.has(i), opened: expandedRows.has(i) }" class="material-symbols-outlined dropdown-handle closed">arrow_drop_down</span>
               </div>
             </td>
 
@@ -136,8 +136,7 @@
           </tr>
 
           <tr data-id="{{i}}" class="expandable-row"[class.opened]="expandedRows.has(i)" [ngStyle]="trWithDropStyle">
-            <td
-              class="expanded-cell " [attr.colspan]="(tableHeaders.headers?.length ?? 0) + 2" >
+            <td class="expanded-cell " [attr.colspan]="(tableHeaders.headers?.length ?? 0) + 2" >
               <div class="subtable-wrapper" [class.expanded]="expandedRows.has(i)" >
                 <table>
                   <thead>

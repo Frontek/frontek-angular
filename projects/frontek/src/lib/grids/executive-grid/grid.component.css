@@ -193,23 +193,21 @@ td.no-border {
 }
 fixed
 /* Toggle arrow animation */
-.dropdown-handle-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.dropdown-handle {
   transition: transform 0.3s ease;
 }
 
-.dropdown-handle-box.closed {
+.dropdown-handle.closed {
   transform: rotate(-90deg);
+  transition: transform 0.3s ease;
 }
 
-.dropdown-handle-box.closed:hover {
+.dropdown-handle.closed:hover {
   transform: rotate(0deg);
 }
-
-.dropdown-handle-box.opened {
+.dropdown-handle.opened {
   transform: rotate(0deg);
+  transition: transform 0.3s ease;
 }
 
 /* Prevent unwanted pointer interactions */
