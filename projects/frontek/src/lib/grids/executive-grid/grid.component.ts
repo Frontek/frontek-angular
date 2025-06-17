@@ -19,27 +19,15 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     headers: [],
     subheaders: []
   }
+  @Input() rowData: TableData  = [];
+
+
   @Input() configs: Configs = {}
   @Input() filter: FilterConfig = {fieldToFilter: '',filters: []}
 
-  @Input() rowData: TableData  = [];
   @Input() tableIdentifier: string = "frontek-grid-executive";
 
   @Input() styles:TableStyles = {
-    thead: {
-      fontSize: '15px',
-      fontColor: '#fff',
-      bgColor: '#2F3845',
-      bgColorHover: '#3A4452',
-      textAlignment: 'left'
-    },
-    tbody: {
-      fontSize: '15px',
-      fontColor: '#fff',
-      bgColor: '#1D2634',
-      bgColorHover: '#2F3845',
-      textAlignment: 'left'
-    },
     filterBox: {
       fontSize: '15px',
       fontColor: '#fff',
@@ -55,9 +43,6 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   };
 
   // Style bindings
-  subtableStyle: Record<string, string> = {};
-  subtheadStyle: Record<string, string> = {};
-  subtbodyStyle: Record<string, string> = {};
   searchIcon: Record<string, string> = {};
   filtersBox: Record<string, string> = {};
   activeFilter: Record<string, string> = {};
@@ -99,36 +84,23 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.subtheadStyle = {
-      'background-color': `${this.styles.thead?.bgColor}`,
-      'font-size': `13px`,
-      'color': `${this.styles.thead?.fontColor}`,
-      'text-align': `${this.styles.thead?.textAlignment}`,
-    };
-    this.subtbodyStyle = {
-      'background-color': `${this.styles.tbody?.bgColor}`,
-      'font-size': `13px`,
-      'color': `${this.styles.tbody?.fontColor}`,
-      'text-align': `${this.styles.tbody?.textAlignment}`,
-    };
+    // this.searchIcon = {
+    //   'font-size': `${this.styles.search?.iconSize}`,
+    //   'color': `${this.styles.search?.fontColor}`
+    // };
 
-    this.searchIcon = {
-      'font-size': `${this.styles.search?.iconSize}`,
-      'color': `${this.styles.search?.fontColor}`
-    };
-
-    this.filtersBox = {
-      'background-color': `${this.styles.filterBox?.bgColor}`,
-      'font-size': `${this.styles.filterBox?.fontSize}`,
-      'color': `${this.styles.filterBox?.fontColor}`,
-    };
-    this.activeFilter = {
-      'background-color': `${this.styles.filterBox?.bgColorHover}`,
-    };
-    this.input = {
-      'font-size': `${this.styles.search?.fontSize}`,
-      'color': `${this.styles.search?.fontColor}`,
-    };
+    // this.filtersBox = {
+    //   'background-color': `${this.styles.filterBox?.bgColor}`,
+    //   'font-size': `${this.styles.filterBox?.fontSize}`,
+    //   'color': `${this.styles.filterBox?.fontColor}`,
+    // };
+    // this.activeFilter = {
+    //   'background-color': `${this.styles.filterBox?.bgColorHover}`,
+    // };
+    // this.input = {
+    //   'font-size': `${this.styles.search?.fontSize}`,
+    //   'color': `${this.styles.search?.fontColor}`,
+    // };
   }
 
 

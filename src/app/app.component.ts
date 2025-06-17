@@ -1,4 +1,4 @@
-import { DataItem, TableData } from './../../projects/frontek/src/lib/grids/executive-grid/interfaces/interfaces';
+import { DataItem, TableConfig, TableData } from './../../projects/frontek/src/lib/grids/executive-grid/interfaces/interfaces';
 import { Component } from '@angular/core';
 import { SimpleGridComponent,ExecutiveGridComponent } from '../../projects/frontek/src/public-api';
 
@@ -29,7 +29,7 @@ export class AppComponent {
   //   { field: 'frete', header: 'Frete' },
   //   { field: 'custo_sku', header: 'Custo Sku' },
   // ];
-  headers = {
+  headers: TableConfig = {
     headers:[
       { field: 'item', header: 'MLB'},
       { field: 'fornecedor', header: 'Fornecedor' },
@@ -51,9 +51,28 @@ export class AppComponent {
 
   data: TableData = [
    [
-      { field:'item',content:[{text:"MLB231846",type:"text"},{type:"image",link:"www.google.com",imgSrc:"https://http2.mlstatic.com/D_NQ_NP_654999-MLU72565367548_112023-O.webp"}],},
-      { field: 'fornecedor', content: [{text:"Fornecedor",type:"text"},{text:"SP-Brazil",type:"description"}] },
-      { field: 'envio', content: [{text:"ME2",type:"tag"},{text:"ME1",type:"tag"}] },
+      {
+        field:'item',
+        content:[
+          {text:"MLB231846",type:"text"},
+          {text:"SKU12894",type:"description"},
+          {type:"image",link:"www.google.com",imgSrc:"https://http2.mlstatic.com/D_NQ_NP_654999-MLU72565367548_112023-O.webp"}
+        ],
+      },
+      {
+        field: 'fornecedor',
+        content: [
+          {text:"Fornecedor",type:"text"},
+          {text:"SP-Brazil",type:"description"}
+        ]
+      },
+      {
+        field: 'envio',
+        content: [
+          {text:"ME2",type:"tag"},
+          {text:"ME1",type:"tag"}
+        ]
+      },
       // { field: 'status', content: { text: 'perdendo', type: 'badge', color: 'red' } },
       // { field: 'preco_ativo', content: { text: 'R$ 335,15' } },
       // { field: 'margem_ativa', content: { text: 'R$ 78,64' } },
@@ -69,11 +88,4 @@ export class AppComponent {
 
    ],
   ]
-
-  headerBackgroundColor = 'lightgray';
-  bodyBackgroundColor = 'red';
-  textColor = 'black';
-  textFontSize = '16px';
-  textAlign = 'left';
-
 }

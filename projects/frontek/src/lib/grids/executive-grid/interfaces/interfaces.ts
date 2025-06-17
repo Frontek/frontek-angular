@@ -1,6 +1,11 @@
-export interface Tag {
-  text: string;
+export interface Styles {
+  fontSize?: string;
+  fontColor?: string;
+  bgColor?: string;
+  bgColorHover?: string;
+  textAlignment?: string;
 }
+
 export interface Field{
   text?: string;
   type: 'text' | 'badge' | 'image' | 'link' | 'description' | 'tag';
@@ -14,17 +19,6 @@ export interface DataItem {
   content: Field[];
 }
 
-
-export type RowData = DataItem[];
-export type TableData = RowData[];
-
-export interface Styles {
-  fontSize?: string;
-  fontColor?: string;
-  bgColor?: string;
-  bgColorHover?: string;
-  textAlignment?: string;
-}
 export interface Header {
   id?:number;
   field: string;
@@ -32,11 +26,19 @@ export interface Header {
   styles? : Styles
 }
 
-
 export interface TableConfig {
   headers?: Header[];
   subheaders?: Header[];
 }
+
+export type RowData = DataItem[];
+export type TableData = RowData[];
+
+
+
+
+//NEED IMPROVEMENT
+
 export interface TableSectionStyle {
   fontSize?: string;
   fontColor?: string;
