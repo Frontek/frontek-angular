@@ -43,10 +43,10 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
   };
 
   // Style bindings
-  searchIcon: Record<string, string> = {};
-  filtersBox: Record<string, string> = {};
-  activeFilter: Record<string, string> = {};
-  input: Record<string, string> = {};
+  // searchIcon: Record<string, string> = {};
+  // filtersBox: Record<string, string> = {};
+  // activeFilter: Record<string, string> = {};
+  // input: Record<string, string> = {};
 
   // Column sizes
   headersWidths: { [id: number]: number } = {};
@@ -83,25 +83,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     this.subHeadersWidths = Object.fromEntries(this.tableHeaders.subheaders?.map(subheader => [subheader.id!, 200]) ?? []);
   }
 
-  ngOnChanges() {
-    // this.searchIcon = {
-    //   'font-size': `${this.styles.search?.iconSize}`,
-    //   'color': `${this.styles.search?.fontColor}`
-    // };
-
-    // this.filtersBox = {
-    //   'background-color': `${this.styles.filterBox?.bgColor}`,
-    //   'font-size': `${this.styles.filterBox?.fontSize}`,
-    //   'color': `${this.styles.filterBox?.fontColor}`,
-    // };
-    // this.activeFilter = {
-    //   'background-color': `${this.styles.filterBox?.bgColorHover}`,
-    // };
-    // this.input = {
-    //   'font-size': `${this.styles.search?.fontSize}`,
-    //   'color': `${this.styles.search?.fontColor}`,
-    // };
-  }
+  ngOnChanges() {}
 
 
 
@@ -228,6 +210,39 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       document.addEventListener('mouseup', onMouseUp);
     }
 
+      onSubColumnResizeStart(event: MouseEvent, id: number) {
+        event.preventDefault();
+        const startX = event.pageX;
+        const initialWidth = this.subHeadersWidths ? this.subHeadersWidths[id] : 200;
+
+        const onMouseMove = (moveEvent: MouseEvent) => {
+          const deltaX = moveEvent.pageX - startX;
+          const updatedWidth = Math.max(initialWidth + deltaX, 150);
+
+          requestAnimationFrame(() => {
+            const headerRow = document.querySelector('.thead tr') as HTMLElement;
+            const totalColumnWidth = Object.values(this.subHeadersWidths).reduce((sum, width) => sum + width, 0);
+            const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
+
+            if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
+                document.removeEventListener('mousemove', onMouseMove);
+                return;
+              } else {
+                if (this.subHeadersWidths) {
+                  this.subHeadersWidths[id] = updatedWidth;
+                }
+              }
+          });
+        };
+
+        const onMouseUp = () => {
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+        };
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+      }
 
 
 
@@ -238,50 +253,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
 
 
-  // Column Resize Handler
 
-
-  // Column Resize Handler
-  onSubColumnResizeStart(event: MouseEvent, id: number) {
-    event.preventDefault();
-    const startX = event.pageX;
-    const initialWidth = this.subHeadersWidths ? this.subHeadersWidths[id] : 200;
-
-    const onMouseMove = (moveEvent: MouseEvent) => {
-      const deltaX = moveEvent.pageX - startX;
-      const updatedWidth = Math.max(initialWidth + deltaX, 150);
-
-      // requestAnimationFrame(() => {
-      //   const headerRow = document.querySelector('.custom-thead tr') as HTMLElement;
-      //   const totalColumnWidth = this.subHeadersWidths?.reduce((sum, width) => sum + width, 0) || 0;
-      //   const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
-
-      //   console.log('Header row width:', headerRowWidth);
-
-      //   if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
-      //     document.removeEventListener('mousemove', onMouseMove);
-      //     return;
-      //   } else {
-      //     if (this.subHeadersWidths) {
-      //       this.subHeadersWidths[id] = updatedWidth;
-      //     }
-      //   }
-      // });
-    };
-
-    const onMouseUp = () => {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  }
-
-  onTrHover(event: MouseEvent, columnIndex: number, reset: boolean = false) {
-    const element = event.target as HTMLElement;
-    element.style.backgroundColor = reset ? `${this.styles.tbody?.bgColorHover}` : `${this.styles.tbody?.bgColor}`;
-  }
 
 
   // Persist and retrieve layout settings
@@ -308,55 +280,5 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     }
   }
 
-  // Toggle icon class (for expand/collapse)
-  toggleArrowDirection(event: MouseEvent) {
-    const arrowIcon = event.target as HTMLElement;
-    arrowIcon.classList.toggle('closed');
-    arrowIcon.classList.toggle('opened');
-  }
-
-  findData() {
-    if (!this.searchTerm) {
-      this.filteredData = [...this.rowData];
-      return;
-    }
-
-    const term = this.searchTerm.toLowerCase();
-
-    this.filteredData = this.rowData.filter(row => {
-      const directMatch = Object.entries(row).some(([key, value]) => {
-        if (key === 'subdatas' && typeof value === 'object' && value !== null) {
-          return Object.values(value).some(subVal =>
-            String(subVal).toLowerCase().includes(term)
-          );
-        } else {
-          return String(value).toLowerCase().includes(term);
-        }
-      });
-      return directMatch;
-    });
-
-    if (this.filteredData.length === 0) {
-      this.filteredData = [];
-    }
-  }
-
-  onFilterChange(event: MouseEvent,value:string){
-    // const element = event.target as HTMLElement;
-    // const filterValue = value;
-    // const fieldToFilter = this.filter.fieldToFilter;
-    // this.filteredData = [...this.rowData];
-    // if (filterValue) {
-    //   this.activeFilterValue = filterValue;
-    //   this.filteredData = this.filteredData.filter(row => {
-    //     const fieldValue = row[fieldToFilter];
-    //     return fieldValue && String(fieldValue).toLowerCase().includes(filterValue.toLowerCase());
-    //   });
-    // } else {
-    //   this.activeFilterValue = '';
-    //   this.filteredData = [...this.rowData];
-    // }
-
-  }
 }
 

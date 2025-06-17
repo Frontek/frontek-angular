@@ -85,17 +85,15 @@
 </div> -->
 
 <div class="filters-head">
-  <div [ngStyle]="filtersBox" class="filters-box">
+  <div [ngStyle]="getConfigStyles(configs,false,'table')" class="filters-box">
     <label *ngFor="let filter of filter.filters; let i = index"
-      class="label"
-      (click)="onFilterChange($event,filter.value)"
-      [ngStyle]="activeFilterValue === filter.value ? activeFilter : null">
+      class="label">
       {{ filter.label }}
     </label>
   </div>
   <div class="search-box">
-    <label class="search-label" for="search"><span [ngStyle]="searchIcon" class="material-symbols-outlined">search</span></label>
-    <input [(ngModel)]="searchTerm" (ngModelChange)="findData()" [ngStyle]="input" id="search" class="search-input" type="text" placeholder="Buscar..." />
+    <label class="search-label" for="search"><span class="material-symbols-outlined">search</span></label>
+    <input [(ngModel)]="searchTerm" id="search" class="search-input" type="text" placeholder="Buscar..." />
   </div>
 </div>
 
@@ -145,7 +143,7 @@
                          <div class="space-between">
                           <span>{{ column.header }}</span>
                           <div class="d-flex">
-                            <span  class="material-symbols-outlined resize">drag_indicator</span>
+                            <span (mousedown)="onSubColumnResizeStart($event, column?.id ?? 0); $event.stopPropagation();" class="material-symbols-outlined cursor-resize">drag_indicator</span>
                           </div>
                         </div>
                       </th>
