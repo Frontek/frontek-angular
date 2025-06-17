@@ -155,7 +155,9 @@
                   <tbody>
                     <tr>
                       <td *ngFor="let subcolumn of tableHeaders.subheaders" [style.width.px]="subHeadersWidths[subcolumn.id ?? 0]" >
-                        oi
+                         <ng-container *ngFor="let dataObj of data">
+                            <td-content *ngIf="subcolumn['field'] == dataObj['field']" [data]="dataObj['content']"></td-content>
+                          </ng-container>
                       </td>
                       <td class="no-border"></td>
                     </tr>

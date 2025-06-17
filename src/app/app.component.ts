@@ -37,7 +37,7 @@ export class AppComponent {
       {field: 'status', header: 'Status' },
     ],
     subheaders: [
-      { field: 'fornecedor', header: 'Fornecedor' },
+      { field: 'promotion', header: 'Campaign' },
     ]
   }
 
@@ -79,7 +79,15 @@ export class AppComponent {
         content:[
           { text: 'ativo', type: 'badge', styles: {} },
         ]
-      }
+      },
+      {
+        field: 'promotion',
+        content: [
+          {text:"Campanha",type:"text"},
+          {text:"MLB",type:"tag"}
+        ]
+      },
+
       // { field: 'status', content: { text: 'perdendo', type: 'badge', color: 'red' } },
       // { field: 'preco_ativo', content: { text: 'R$ 335,15' } },
       // { field: 'margem_ativa', content: { text: 'R$ 78,64' } },
