@@ -1,6 +1,18 @@
 export interface Tag {
   text: string;
 }
+export interface Field{
+  text?: string;
+  type: 'text' | 'badge' | 'image' | 'link' | 'description' | 'tag';
+  styles?: Styles;
+  link?: string;
+  imgSrc?: string;
+}
+export interface DataItem {
+  id?: number;
+  field: string;
+  content: Field[];
+}
 
 
 export type RowData = DataItem[];
@@ -20,18 +32,6 @@ export interface Header {
   styles? : Styles
 }
 
-export interface FieldDataItem {
-  text?: string;
-  image?: string;
-  description?: string;
-  tags?: Tag[];
-}
-export interface DataItem {
-  id?: number;
-  field: string;
-  content: FieldDataItem;
-  styles?: Styles;
-}
 
 export interface TableConfig {
   headers?: Header[];

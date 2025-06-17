@@ -96,8 +96,6 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
     this.headersWidths = Object.fromEntries(this.tableHeaders.headers?.map(header => [header.id!, 200]) ?? []);
     this.subHeadersWidths = Object.fromEntries(this.tableHeaders.subheaders?.map(subheader => [subheader.id!, 200]) ?? []);
-
-    console.log("data", this.filteredData);
   }
 
   ngOnChanges() {

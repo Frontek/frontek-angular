@@ -1,3 +1,4 @@
+import { DataItem, TableData } from './../../projects/frontek/src/lib/grids/executive-grid/interfaces/interfaces';
 import { Component } from '@angular/core';
 import { SimpleGridComponent,ExecutiveGridComponent } from '../../projects/frontek/src/public-api';
 
@@ -31,7 +32,8 @@ export class AppComponent {
   headers = {
     headers:[
       { field: 'item', header: 'MLB'},
-      { field: 'fornecedor', header: 'Fornecedor' }
+      { field: 'fornecedor', header: 'Fornecedor' },
+      { field: 'envio', header: 'Envio' },
     ],
     subheaders: [
       { field: 'fornecedor', header: 'Fornecedor' },
@@ -47,23 +49,23 @@ export class AppComponent {
     ]
   };
 
-  data = [
+  data: TableData = [
    [
-      { field:'item',content:{text:'MLB4563170846',image:`https://http2.mlstatic.com/D_796127-MLU70370396427_072023-O.jpg`,},},
-      { field: 'fornecedor', content: { text: 'KAPPESBERG' } },
-      { field: 'envio', content: { text: 'me2' } },
-      { field: 'status', content: { text: 'perdendo', type: 'badge', color: 'red' } },
-      { field: 'preco_ativo', content: { text: 'R$ 335,15' } },
-      { field: 'margem_ativa', content: { text: 'R$ 78,64' } },
-      { field: 'preco_ganhar_catalogo', content: { text: 'R$ 395,00' } },
-      { field: 'margem_ganhar_catalogo', content: { text: '0,07%' } },
-      { field: 'margem_minima', content: { text: '5,00%' } },
-      { field: 'margem_objetivo', content: { text: '10,00%' } },
-      { field: 'comissao', content: { text:'R$ 72,91' } },
-      { field: 'imposto', content: { text:'R$ 64,35' } },
-      { field: 'taxa_fixa', content:{text:'R$ 0,00'}},
-      { field: 'frete', content:{text:'R$ 98,95'}},
-      { field: 'custo_sku', content:{text:'R$ 139,19'}},
+      { field:'item',content:[{text:"MLB231846",type:"text"},{type:"image",link:"www.google.com",imgSrc:"https://http2.mlstatic.com/D_NQ_NP_654999-MLU72565367548_112023-O.webp"}],},
+      { field: 'fornecedor', content: [{text:"Fornecedor",type:"text"},{text:"SP-Brazil",type:"description"}] },
+      { field: 'envio', content: [{text:"ME2",type:"tag"},{text:"ME1",type:"tag"}] },
+      // { field: 'status', content: { text: 'perdendo', type: 'badge', color: 'red' } },
+      // { field: 'preco_ativo', content: { text: 'R$ 335,15' } },
+      // { field: 'margem_ativa', content: { text: 'R$ 78,64' } },
+      // { field: 'preco_ganhar_catalogo', content: { text: 'R$ 395,00' } },
+      // { field: 'margem_ganhar_catalogo', content: { text: '0,07%' } },
+      // { field: 'margem_minima', content: { text: '5,00%' } },
+      // { field: 'margem_objetivo', content: { text: '10,00%' } },
+      // { field: 'comissao', content: { text:'R$ 72,91' } },
+      // { field: 'imposto', content: { text:'R$ 64,35' } },
+      // { field: 'taxa_fixa', content:{text:'R$ 0,00'}},
+      // { field: 'frete', content:{text:'R$ 98,95'}},
+      // { field: 'custo_sku', content:{text:'R$ 139,19'}},
 
    ],
   ]
