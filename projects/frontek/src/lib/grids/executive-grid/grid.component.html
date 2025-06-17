@@ -105,11 +105,11 @@
       <thead class="thead">
         <tr cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onColumnDrop($event)">
           <th class="fixed-width"></th>
-          <th *ngFor="let header of tableHeaders.headers;" cdkDrag [cdkDragData]="{ id:header.id }"  [ngStyle]="getStyle(header.styles || {},headerHovered[header.id])" (mouseenter)="onHover(header.id, true,'th')" (mouseleave)="onHover( header.id, false,'th')"[style.width.px]="headersWidths[header.id]">
+          <th *ngFor="let header of tableHeaders.headers;" cdkDrag [cdkDragData]="{ id:header.id }"  [ngStyle]="getStyle(header.styles || {},headerHovered[header?.id ?? 0])" (mouseenter)="onHover(header?.id ?? 0, true,'th')" (mouseleave)="onHover( header?.id ?? 0, false,'th')"[style.width.px]="headersWidths[header?.id ?? 0]">
             <div class="space-between">
               <span>{{ header.header }}</span>
               <div class="d-flex">
-                  <span (mousedown)="onColumnResizeStart($event, header.id); $event.stopPropagation();" class="material-symbols-outlined cursor-resize">drag_indicator</span>
+                  <span (mousedown)="onColumnResizeStart($event, header?.id ?? 0); $event.stopPropagation();" class="material-symbols-outlined cursor-resize">drag_indicator</span>
               </div>
             </div>
           </th>
@@ -126,7 +126,7 @@
               </div>
             </td>
 
-            <td *ngFor="let header of tableHeaders.headers;" [style.width.px]="headersWidths[header.id]"class="td-content">
+            <td *ngFor="let header of tableHeaders.headers;" [style.width.px]="headersWidths[header?.id ?? 0]"class="td-content">
               <ng-container *ngFor="let dataObj of data">
                 <td-content *ngIf="header['field'] == dataObj['field']" [data]="dataObj['content']"></td-content>
               </ng-container>

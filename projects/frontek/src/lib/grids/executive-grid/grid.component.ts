@@ -85,25 +85,15 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     const existingHeadersIds = new Set<number>(this.tableHeaders.headers?.map(h => h.id).filter(id => id !== undefined) as number[]);
     const existingDatasIds = new Set<number>(this.filteredData.map(row => row.map(item => item.id)).flat().filter(id => id !== undefined) as number[]);
 
-    this.tableHeaders.headers = this.tableHeaders.headers?.map((header, index) => {
-      return {...header,id:header.id || this.idGenerator(existingHeadersIds,existingDatasIds,'header')};
-    });
-
+    this.tableHeaders.headers = this.tableHeaders.headers?.map((header, index) => {return {...header,id:header.id || this.idGenerator(existingHeadersIds,existingDatasIds,'header')};});
     this.filteredData = this.rowData.map((row, rowIndex) => {
       return row.map(item => {
         return {...item, id: item.id || this.idGenerator(existingHeadersIds, existingDatasIds, 'data')};
       });
     });
 
-    if (this.subHeadersWidths?.length === 0) {
-      this.subHeadersWidths = this.tableHeaders.subheaders?.map(() => 200);
-    }
-
-
-    this.headersWidths = Object.fromEntries(
-      this.tableHeaders.headers?.map(header => [header.id!, 200]) ?? []
-    );
-
+    this.subHeadersWidths = this.tableHeaders.subheaders?.map(() => 200);
+    this.headersWidths = Object.fromEntries(this.tableHeaders.headers?.map(header => [header.id!, 200]) ?? []);
   }
 
   ngOnChanges() {
@@ -230,44 +220,52 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
         moveItemInArray(this.tableHeaders.headers || [], event.previousIndex, event.currentIndex);
       }
     }
+    onColumnResizeStart(event: MouseEvent, id: number) {
+      event.preventDefault();
+      const startX = event.pageX;
+      const initialWidth = this.headersWidths ? this.headersWidths[id] : 200;
+
+      const onMouseMove = (moveEvent: MouseEvent) => {
+        const deltaX = moveEvent.pageX - startX;
+        const updatedWidth = Math.max(initialWidth + deltaX, 150);
+
+        requestAnimationFrame(() => {
+          const headerRow = document.querySelector('.thead tr') as HTMLElement;
+          const totalColumnWidth = Object.values(this.headersWidths).reduce((sum, width) => sum + width, 0);
+          const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
+
+          if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
+            document.removeEventListener('mousemove', onMouseMove);
+            return;
+          } else {
+            if (this.headersWidths) {
+              this.headersWidths[id] = updatedWidth;
+            }
+          }
+        });
+      };
+
+      const onMouseUp = () => {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      };
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    }
+
+
+
+
+
+
+
 
 
 
 
   // Column Resize Handler
-  onColumnResizeStart(event: MouseEvent, id: number) {
-    event.preventDefault();
-    const startX = event.pageX;
-    const initialWidth = this.headersWidths ? this.headersWidths[id] : 200;
 
-    const onMouseMove = (moveEvent: MouseEvent) => {
-      const deltaX = moveEvent.pageX - startX;
-      const updatedWidth = Math.max(initialWidth + deltaX, 150);
-
-      requestAnimationFrame(() => {
-        const headerRow = document.querySelector('.thead tr') as HTMLElement;
-        const totalColumnWidth = Object.values(this.headersWidths).reduce((sum, width) => sum + width, 0);
-        const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
-
-        if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
-          document.removeEventListener('mousemove', onMouseMove);
-          return;
-        } else {
-          if (this.headersWidths) {
-            this.headersWidths[id] = updatedWidth;
-          }
-        }
-      });
-    };
-
-    const onMouseUp = () => {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  }
 
   // Column Resize Handler
   onSubColumnResizeStart(event: MouseEvent, id: number) {

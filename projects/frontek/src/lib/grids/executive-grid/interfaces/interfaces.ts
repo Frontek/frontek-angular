@@ -26,7 +26,7 @@ export interface HeadersStyle {
   textAlignment?: string;
 }
 export interface Header {
-  id:number;
+  id?:number;
   field: string;
   header: string;
   styles? : HeadersStyle
