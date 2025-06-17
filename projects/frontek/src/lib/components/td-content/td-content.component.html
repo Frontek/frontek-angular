@@ -1,36 +1,14 @@
-<!-- <div class="td-content" [ngStyle]="getStyle(styles,false)">
-  <ng-container *ngFor="let value of data">
-    <a [href]="data.link" target="_blank" rel="noopener noreferrer">
-      <img *ngIf="data.image" [src]="data.image" alt="">
-    </a>
-    <div class="content">
-      <p (click)="copyText(value.value,$event)" class="copy" *ngIf="value.type !== 'badge'">{{ value.value }}</p>
-      <span (click)="copyText(data.text,$event)" class="badge copy" *ngIf="data.type == 'badge'"
-        [style.borderColor]="data.color"
-        >
-        <span [style.backgroundColor]="data.color" class="ball"></span>
-        {{ data.text }}
-      </span>
-      <p (click)="copyText(data.text,$event)" *ngIf="data.description" class="description copy">{{ data.description }}</p>
-      <div class="tags-box" *ngIf="data.tags">
-        <span class="tag copy" *ngFor="let tag of data.tags" (click)="copyText(tag.text,$event)">{{ tag.text }}</span>
-      </div>
-    </div>
-  </ng-container>
-</div> -->
 <div *ngIf="data" class="td-content">
   <ng-container *ngFor="let value of content">
     <ng-container *ngIf="value.type === 'image'">
-      <a [href]="value.link" target="_blank" rel="noopener noreferrer">
-        <img [ngStyle]="getStyle(value.styles ?? {},false,value.type)"  [src]="value.imgSrc" alt="num">
-      </a>
+      <img [ngStyle]="getStyle(value.styles ?? {},false,value.type)"  [src]="value.imgSrc" alt="num" (click)="clickAction(value.text,value.href ,$event)">
     </ng-container>
   </ng-container>
 
   <div class="content">
     <ng-container *ngFor="let value of content">
       <ng-container *ngIf="value.type === 'text' || value.type === 'description'">
-          <p [ngStyle]="getStyle(value.styles ?? {},false,value.type)" (click)="copyText(value.text ,$event)" class="copy">{{ value.text }}</p>
+          <p [ngStyle]="getStyle(value.styles ?? {},false,value.type)" (click)="clickAction(value.text,value.href ,$event)" class="copy">{{ value.text }}</p>
       </ng-container>
     </ng-container>
   </div>
@@ -38,7 +16,15 @@
   <div class="tags-box">
     <ng-container *ngFor="let value of content">
       <ng-container *ngIf="value.type == 'tag'">
-          <span [ngStyle]="getStyle(value.styles ?? {},false,value.type)" class="copy" (click)="copyText(value.text,$event)">{{ value.text }}</span>
+          <span [ngStyle]="getStyle(value.styles ?? {},false,value.type)" class="copy" (click)="clickAction(value.text,value.href,$event)">{{ value.text }}</span>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <div class="tags-box">
+    <ng-container *ngFor="let value of content">
+      <ng-container *ngIf="value.type == 'badge'">
+        <span [ngStyle]="getStyle(value.styles ?? {},false,value.type)" class="copy" (click)="clickAction(value.text,value.href,$event)">{{ value.text }}</span>
       </ng-container>
     </ng-container>
   </div>

@@ -121,8 +121,30 @@ ngOnInit() {
               'background-color': style.bgColor || '#f3f4f6',
             };
               break;
+          case "badge":
+            obj = {
+              'display':'flex',
+              'align-items': 'center',
+              'justify-content': 'center',
+              'padding': '.4rem .6rem',
+              'border-radius': '.4rem',
+              'font-size': style.fontSize || '12px',
+              'font-weight': 'bold',
+              'color': style.fontColor || '#94a3b8',
+              'border': `1px solid ${style.bgColor || '#f3f4f6'}`,
+              'background-color': style.bgColor || '#f3f4f6'
+            };
+              break;
             };
 
         return obj;
+      }
+
+      clickAction(text = "",link:string = "",event: MouseEvent) {
+        if (link && link !== '') {
+          window.open(link, '_blank');
+        }else{
+          this.copyText(text,event);
+        }
       }
 }

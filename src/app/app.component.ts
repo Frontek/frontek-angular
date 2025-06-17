@@ -34,6 +34,7 @@ export class AppComponent {
       { field: 'item', header: 'MLB'},
       { field: 'fornecedor', header: 'Fornecedor' },
       { field: 'envio', header: 'Envio' },
+      {field: 'status', header: 'Status' },
     ],
     subheaders: [
       { field: 'fornecedor', header: 'Fornecedor' },
@@ -56,7 +57,7 @@ export class AppComponent {
         content:[
           {text:"MLB231846",type:"text"},
           {text:"SKU12894",type:"description"},
-          {type:"image",link:"www.google.com",imgSrc:"https://http2.mlstatic.com/D_NQ_NP_654999-MLU72565367548_112023-O.webp"}
+          {type:"image",href:"https://www.google.com",imgSrc:"https://http2.mlstatic.com/D_NQ_NP_654999-MLU72565367548_112023-O.webp"}
         ],
       },
       {
@@ -73,6 +74,12 @@ export class AppComponent {
           {text:"ME1",type:"tag"}
         ]
       },
+      {
+        field: 'status',
+        content:[
+          { text: 'ativo', type: 'badge', styles: {} },
+        ]
+      }
       // { field: 'status', content: { text: 'perdendo', type: 'badge', color: 'red' } },
       // { field: 'preco_ativo', content: { text: 'R$ 335,15' } },
       // { field: 'margem_ativa', content: { text: 'R$ 78,64' } },

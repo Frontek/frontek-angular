@@ -10,7 +10,7 @@ export interface Field{
   text?: string;
   type: 'text' | 'badge' | 'image' | 'link' | 'description' | 'tag';
   styles?: Styles;
-  link?: string;
+  href?: string;
   imgSrc?: string;
 }
 export interface DataItem {
