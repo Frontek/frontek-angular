@@ -85,7 +85,7 @@
 </div> -->
 
 <div class="filters-head">
-  <div [ngStyle]="getConfigStyles(configs,false,'table')" class="filters-box">
+  <div class="filters-box">
     <label *ngFor="let filter of filter.filters; let i = index"
       class="label">
       {{ filter.label }}
@@ -107,7 +107,7 @@
             <div class="space-between">
               <span>{{ header.header }}</span>
               <div class="d-flex">
-                  <span (mousedown)="onColumnResizeStart($event, header?.id ?? 0); $event.stopPropagation();" class="material-symbols-outlined cursor-resize">drag_indicator</span>
+                  <span (mousedown)="onColumnResizeStart($event, header?.id ?? 0,'header'); $event.stopPropagation();" class="material-symbols-outlined cursor-resize">drag_indicator</span>
               </div>
             </div>
           </th>
@@ -143,7 +143,7 @@
                          <div class="space-between">
                           <span>{{ column.header }}</span>
                           <div class="d-flex">
-                            <span (mousedown)="onSubColumnResizeStart($event, column?.id ?? 0); $event.stopPropagation();" class="material-symbols-outlined cursor-resize">drag_indicator</span>
+                            <span (mousedown)="onColumnResizeStart($event, column?.id ?? 0,'subheader'); $event.stopPropagation();" class="material-symbols-outlined cursor-resize">drag_indicator</span>
                           </div>
                         </div>
                       </th>

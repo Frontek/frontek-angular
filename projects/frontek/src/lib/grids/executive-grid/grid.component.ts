@@ -176,10 +176,17 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
         moveItemInArray(this.tableHeaders.headers || [], event.previousIndex, event.currentIndex);
       }
     }
-    onColumnResizeStart(event: MouseEvent, id: number) {
+
+    onColumnResizeStart(event: MouseEvent, id: number,column: 'header' | 'subheader') {
       event.preventDefault();
       const startX = event.pageX;
-      const initialWidth = this.headersWidths ? this.headersWidths[id] : 200;
+      let initialWidth = 200;
+      if( column === 'header') {
+        initialWidth = this.headersWidths ? this.headersWidths[id] : 200;
+      }
+      if( column === 'subheader') {
+        initialWidth = this.subHeadersWidths ? this.subHeadersWidths[id] : 200;
+      }
 
       const onMouseMove = (moveEvent: MouseEvent) => {
         const deltaX = moveEvent.pageX - startX;
@@ -187,15 +194,30 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
         requestAnimationFrame(() => {
           const headerRow = document.querySelector('.thead tr') as HTMLElement;
-          const totalColumnWidth = Object.values(this.headersWidths).reduce((sum, width) => sum + width, 0);
+          let totalColumnWidth = 0;
+
+          if (column === 'header') {
+            totalColumnWidth = Object.values(this.headersWidths).reduce((sum, width) => sum + width, 0);
+          }
+          if (column === 'subheader') {
+            totalColumnWidth = Object.values(this.subHeadersWidths).reduce((sum, width) => sum + width, 0);
+          }
+
           const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
 
           if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
             document.removeEventListener('mousemove', onMouseMove);
             return;
           } else {
-            if (this.headersWidths) {
-              this.headersWidths[id] = updatedWidth;
+            if (column === 'header') {
+              if (this.headersWidths) {
+                this.headersWidths[id] = updatedWidth;
+              }
+            }
+            if (column === 'subheader') {
+              if (this.subHeadersWidths) {
+                this.subHeadersWidths[id] = updatedWidth;
+              }
             }
           }
         });
@@ -209,40 +231,6 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
     }
-
-      onSubColumnResizeStart(event: MouseEvent, id: number) {
-        event.preventDefault();
-        const startX = event.pageX;
-        const initialWidth = this.subHeadersWidths ? this.subHeadersWidths[id] : 200;
-
-        const onMouseMove = (moveEvent: MouseEvent) => {
-          const deltaX = moveEvent.pageX - startX;
-          const updatedWidth = Math.max(initialWidth + deltaX, 150);
-
-          requestAnimationFrame(() => {
-            const headerRow = document.querySelector('.thead tr') as HTMLElement;
-            const totalColumnWidth = Object.values(this.subHeadersWidths).reduce((sum, width) => sum + width, 0);
-            const headerRowWidth = headerRow?.getBoundingClientRect().width || 0;
-
-            if (totalColumnWidth > headerRowWidth && updatedWidth > initialWidth) {
-                document.removeEventListener('mousemove', onMouseMove);
-                return;
-              } else {
-                if (this.subHeadersWidths) {
-                  this.subHeadersWidths[id] = updatedWidth;
-                }
-              }
-          });
-        };
-
-        const onMouseUp = () => {
-          document.removeEventListener('mousemove', onMouseMove);
-          document.removeEventListener('mouseup', onMouseUp);
-        };
-
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-      }
 
 
 
