@@ -10,6 +10,7 @@ import { SimpleGridComponent,ExecutiveGridComponent } from '../../projects/front
 export class AppComponent {
   title = 'frontek-angular';
 
+  //  header example { field: 'item', header: 'MLB', styles: { fontSize: '16px', fontColor: 'black', bgColor: 'lightgray',bgColorHover:'red'} }
   // headers = [
   //   { field: 'item', header: 'MLB' },
   //   { field: 'fornecedor', header: 'Fornecedor' },
@@ -64,7 +65,7 @@ export class AppComponent {
       { field: 'frete', content:{text:'R$ 98,95'}},
       { field: 'custo_sku', content:{text:'R$ 139,19'}},
 
-   ]
+   ],
   ]
 
   headerBackgroundColor = 'lightgray';

@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 import { TdContentComponent } from '../../components/td-content/td-content.component';
-import { TableData, TableStyles, FilterConfig, TableConfig, HeadersStyle, Configs } from './interfaces/interfaces';
+import { TableData, TableStyles, FilterConfig, TableConfig, Styles, Configs } from './interfaces/interfaces';
 
 @Component({
   selector: 'executive-grid-component',
@@ -65,7 +65,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
   // Column sizes
   headersWidths: { [id: number]: number } = {};
-  subHeadersWidths?: number[] = [];
+  subHeadersWidths: { [id: number]: number } = {};
   headerHovered: boolean[] = [];
   bodyHovered: boolean[] = [];
 
@@ -86,14 +86,18 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
     const existingDatasIds = new Set<number>(this.filteredData.map(row => row.map(item => item.id)).flat().filter(id => id !== undefined) as number[]);
 
     this.tableHeaders.headers = this.tableHeaders.headers?.map((header, index) => {return {...header,id:header.id || this.idGenerator(existingHeadersIds,existingDatasIds,'header')};});
+    this.tableHeaders.subheaders = this.tableHeaders.subheaders?.map((subheader, index) => {return {...subheader,id:subheader.id || this.idGenerator(existingHeadersIds,existingDatasIds,'header')};});
     this.filteredData = this.rowData.map((row, rowIndex) => {
       return row.map(item => {
         return {...item, id: item.id || this.idGenerator(existingHeadersIds, existingDatasIds, 'data')};
       });
     });
 
-    this.subHeadersWidths = this.tableHeaders.subheaders?.map(() => 200);
+
     this.headersWidths = Object.fromEntries(this.tableHeaders.headers?.map(header => [header.id!, 200]) ?? []);
+    this.subHeadersWidths = Object.fromEntries(this.tableHeaders.subheaders?.map(subheader => [subheader.id!, 200]) ?? []);
+
+    console.log("data", this.filteredData);
   }
 
   ngOnChanges() {
@@ -131,7 +135,7 @@ export class ExecutiveGridComponent implements OnInit, OnChanges {
 
 
 
-    getStyle(style:HeadersStyle ,isHovered:boolean = false,elementType:string = ""){
+    getStyle(style:Styles ,isHovered:boolean = false,elementType:string = ""){
       let obj;
       if(!elementType) {
         obj= {

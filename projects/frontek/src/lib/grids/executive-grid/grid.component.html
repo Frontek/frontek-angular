@@ -126,7 +126,7 @@
               </div>
             </td>
 
-            <td *ngFor="let header of tableHeaders.headers;" [style.width.px]="headersWidths[header?.id ?? 0]"class="td-content">
+            <td *ngFor="let header of tableHeaders.headers;">
               <ng-container *ngFor="let dataObj of data">
                 <td-content *ngIf="header['field'] == dataObj['field']" [data]="dataObj['content']"></td-content>
               </ng-container>
@@ -141,11 +141,11 @@
                   <thead>
                     <tr>
                       <th
-                        *ngFor="let column of tableHeaders.subheaders; let i = index" [ngStyle]="subtheadStyle" [style.width.px]="subHeadersWidths?.[i] ?? 0" (mouseenter)="onHover( i, true,'th')" (mouseleave)="onHover( i, false,'th')">
+                        *ngFor="let column of tableHeaders.subheaders" [ngStyle]="getStyle(column.styles || {},headerHovered[column?.id ?? 0])" [style.width.px]="subHeadersWidths[column.id ?? 0]" (mouseenter)="onHover( column.id ?? 0, true,'th')" (mouseleave)="onHover( column.id ?? 0, false,'th')">
                          <div class="space-between">
                           <span>{{ column.header }}</span>
                           <div class="d-flex">
-                            <span (mousedown)="onSubColumnResizeStart($event, i); $event.stopPropagation();" class="material-symbols-outlined resize">drag_indicator</span>
+                            <span  class="material-symbols-outlined resize">drag_indicator</span>
                           </div>
                         </div>
                       </th>
@@ -153,8 +153,10 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="subtable-row" data-id="{{i}}" (mouseenter)="onTrHover($event, i, true)" (mouseleave)="onTrHover($event, i, false)">
-                      <td *ngFor="let subcolumn of tableHeaders.subheaders; let i = index" [style.width.px]="subHeadersWidths?.[i] ?? 200" > </td>
+                    <tr>
+                      <td *ngFor="let subcolumn of tableHeaders.subheaders" [style.width.px]="subHeadersWidths[subcolumn.id ?? 0]" >
+                        oi
+                      </td>
                       <td class="no-border"></td>
                     </tr>
                   </tbody>

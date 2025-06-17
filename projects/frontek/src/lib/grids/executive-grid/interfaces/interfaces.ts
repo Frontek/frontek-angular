@@ -2,23 +2,11 @@ export interface Tag {
   text: string;
 }
 
-export interface FieldContent {
-  text?: string;
-  image?: string;
-  description?: string;
-  tags?: Tag[];
-}
 
-export interface FieldItem {
-  id?: number;
-  field: string;
-  content: FieldContent;
-}
-
-export type RowData = FieldItem[];
+export type RowData = DataItem[];
 export type TableData = RowData[];
 
-export interface HeadersStyle {
+export interface Styles {
   fontSize?: string;
   fontColor?: string;
   bgColor?: string;
@@ -29,7 +17,20 @@ export interface Header {
   id?:number;
   field: string;
   header: string;
-  styles? : HeadersStyle
+  styles? : Styles
+}
+
+export interface FieldDataItem {
+  text?: string;
+  image?: string;
+  description?: string;
+  tags?: Tag[];
+}
+export interface DataItem {
+  id?: number;
+  field: string;
+  content: FieldDataItem;
+  styles?: Styles;
 }
 
 export interface TableConfig {
